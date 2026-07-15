@@ -1,8 +1,10 @@
+cat > /mnt/user-data/outputs/main.py << 'PYEOF'
 import telebot
 import random
+import os
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-BOT_TOKEN = 'YOUR_TOKEN_HERE'
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
 CHANNEL = '@YAKUZA_CEO3'
 
@@ -39,44 +41,25 @@ def back_btn(data="back_to_main"):
 def start(message):
     user_name = message.from_user.first_name or "برا"
     if is_subscribed(message.from_user.id):
-        bot.send_message(
-            message.chat.id,
-            f"بەخێربێیت {user_name} 🔥\nبۆتی فەرمی یاکوزا ستۆر 🎮",
-            reply_markup=main_menu()
-        )
+        bot.send_message(message.chat.id, f"بەخێربێیت {user_name} 🔥\nبۆتی فەرمی یاکوزا ستۆر 🎮", reply_markup=main_menu())
     else:
-        bot.send_message(
-            message.chat.id,
-            f"سڵاو {user_name} 👋\n\n❌ پێویستە سەرەتا بچیتە ناو کەناڵەکەمەوە!\n\n👇 جۆین بکە پاشان چێک بکەرەوە",
-            reply_markup=check_sub_markup()
-        )
+        bot.send_message(message.chat.id, f"سڵاو {user_name} 👋\n\n❌ پێویستە سەرەتا بچیتە ناو کەناڵەکەمەوە!\n\n👇 جۆین بکە پاشان چێک بکەرەوە", reply_markup=check_sub_markup())
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
     chat_id = call.message.chat.id
     message_id = call.message.message_id
     user_name = call.from_user.first_name or "برا"
-
     try:
         if call.data == "check_sub":
             if is_subscribed(call.from_user.id):
-                bot.edit_message_text(
-                    f"بەخێربێیت {user_name} 🔥\nبۆتی فەرمی یاکوزا ستۆر 🎮",
-                    chat_id, message_id, reply_markup=main_menu()
-                )
+                bot.edit_message_text(f"بەخێربێیت {user_name} 🔥\nبۆتی فەرمی یاکوزا ستۆر 🎮", chat_id, message_id, reply_markup=main_menu())
             else:
                 bot.answer_callback_query(call.id, "❌ هێشتا جۆین نەکردووی!", show_alert=True)
-
         elif call.data == "back_to_main":
-            bot.edit_message_text(
-                f"بەخێربێیت {user_name} 🔥\nبۆتی فەرمی یاکوزا ستۆر 🎮",
-                chat_id, message_id, reply_markup=main_menu()
-            )
-
+            bot.edit_message_text(f"بەخێربێیت {user_name} 🔥\nبۆتی فەرمی یاکوزا ستۆر 🎮", chat_id, message_id, reply_markup=main_menu())
         elif call.data == "get_latest_hack":
             bot.answer_callback_query(call.id, "🔥 هاکە نوێەکان لە کەناڵەکەمان دان!", show_alert=True)
-
-        # ── بەختەکەت تاقی بکەرەوە ──
         elif call.data == "lucky":
             results = [
                 ("🏆 باشترین بەخت!", "ئەمڕۆ ڕۆژی تۆیە! هەموو شتێک باش دەبێت! 🌟"),
@@ -91,12 +74,7 @@ def callback_query(call):
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("🔄 دووبارە تاقی بکەرەوە", callback_data="lucky"))
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="back_to_main"))
-            bot.edit_message_text(
-                f"🎰 بەختی ئەمڕۆی {user_name}\n\n{result[0]}\n\n{result[1]}",
-                chat_id, message_id, reply_markup=markup
-            )
-
-        # ── پرسیار و وەڵام ──
+            bot.edit_message_text(f"🎰 بەختی ئەمڕۆی {user_name}\n\n{result[0]}\n\n{result[1]}", chat_id, message_id, reply_markup=markup)
         elif call.data == "faq":
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("❓ چۆن ئەپەکان دابەزێنم؟", callback_data="faq_download"))
@@ -105,99 +83,42 @@ def callback_query(call):
             markup.add(InlineKeyboardButton("❓ ئایا ئەکاونتم باند دەبێت؟", callback_data="faq_ban"))
             markup.add(InlineKeyboardButton("❓ پەیوەندی بەیاکوزا", callback_data="faq_contact"))
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="back_to_main"))
-            bot.edit_message_text(
-                "❓ پرسیار و وەڵام\n\nکام پرسیارت هەیە؟",
-                chat_id, message_id, reply_markup=markup
-            )
-
+            bot.edit_message_text("❓ پرسیار و وەڵام\n\nکام پرسیارت هەیە؟", chat_id, message_id, reply_markup=markup)
         elif call.data == "faq_download":
-            bot.edit_message_text(
-                "❓ چۆن ئەپەکان دابەزێنم؟\n\n✅ وەڵام:\n١. بچۆ بۆ فرۆشگای یاکوزا\n٢. ئەپەکەی دەتەوێت هەڵبژێرە\n٣. دوگمەی داونلۆد داپبەژێ\n٤. فایلەکە دادەبەزێت بۆ مۆبایلەکەت",
-                chat_id, message_id, reply_markup=back_btn("faq")
-            )
-
+            bot.edit_message_text("❓ چۆن ئەپەکان دابەزێنم؟\n\n✅ وەڵام:\n١. بچۆ بۆ فرۆشگای یاکوزا\n٢. ئەپەکەی دەتەوێت هەڵبژێرە\n٣. دوگمەی داونلۆد داپبەژێ\n٤. فایلەکە دادەبەزێت بۆ مۆبایلەکەت", chat_id, message_id, reply_markup=back_btn("faq"))
         elif call.data == "faq_free":
-            bot.edit_message_text(
-                "❓ ئایا ئەپەکان بەخۆڕاین؟\n\n✅ وەڵام:\nبەڵێ! هەموو ئەپەکانی یاکوزا ستۆر بەخۆڕاین و مۆدکراون! 🎉\nهیچ پارەیەک پێویست نییە!",
-                chat_id, message_id, reply_markup=back_btn("faq")
-            )
-
+            bot.edit_message_text("❓ ئایا ئەپەکان بەخۆڕاین؟\n\n✅ وەڵام:\nبەڵێ! هەموو ئەپەکانی یاکوزا ستۆر بەخۆڕاین و مۆدکراون! 🎉", chat_id, message_id, reply_markup=back_btn("faq"))
         elif call.data == "faq_install":
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("📱 iPhone", callback_data="faq_install_ios"))
             markup.add(InlineKeyboardButton("🤖 Android", callback_data="faq_install_android"))
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="faq"))
-            bot.edit_message_text(
-                "❓ چۆن Install بکەم؟\n\nکام مۆبایلت هەیە؟",
-                chat_id, message_id, reply_markup=markup
-            )
-
+            bot.edit_message_text("❓ چۆن Install بکەم؟\n\nکام مۆبایلت هەیە؟", chat_id, message_id, reply_markup=markup)
         elif call.data == "faq_install_ios":
-            bot.edit_message_text(
-                "📱 Install کردن لەسەر iPhone\n\n١. AltStore دابەزێنە\n٢. فایلی IPA داونلۆد بکە\n٣. لە AltStore فایلەکە Install بکە\n\nیان TrollStore بەکاربهێنە (iOS 14-16)",
-                chat_id, message_id, reply_markup=back_btn("faq_install")
-            )
-
+            bot.edit_message_text("📱 Install کردن لەسەر iPhone\n\n١. AltStore دابەزێنە\n٢. فایلی IPA داونلۆد بکە\n٣. لە AltStore فایلەکە Install بکە\n\nیان TrollStore بەکاربهێنە (iOS 14-16)", chat_id, message_id, reply_markup=back_btn("faq_install"))
         elif call.data == "faq_install_android":
-            bot.edit_message_text(
-                "🤖 Install کردن لەسەر ئەندرۆید\n\n١. فایلی APK داونلۆد بکە\n٢. Settings → Unknown Sources چالاک بکە\n٣. فایلەکە Install بکە\n\nئاسانە! ✅",
-                chat_id, message_id, reply_markup=back_btn("faq_install")
-            )
-
+            bot.edit_message_text("🤖 Install کردن لەسەر ئەندرۆید\n\n١. فایلی APK داونلۆد بکە\n٢. Settings → Unknown Sources چالاک بکە\n٣. فایلەکە Install بکە\n\nئاسانە! ✅", chat_id, message_id, reply_markup=back_btn("faq_install"))
         elif call.data == "faq_ban":
-            bot.edit_message_text(
-                "❓ ئایا ئەکاونتم باند دەبێت؟\n\n✅ وەڵام:\nئەگەر هاکی باش بەکاربهێنیت باند نابیت!\n\nباشترین هاکەکان بۆ ئامنیەت:\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n\nئاگادار بە لە Auto Play و Auto Queue!",
-                chat_id, message_id, reply_markup=back_btn("faq")
-            )
-
+            bot.edit_message_text("❓ ئایا ئەکاونتم باند دەبێت؟\n\n✅ وەڵام:\nئەگەر هاکی باش بەکاربهێنیت باند نابیت!\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n\nئاگادار بە لە Auto Play و Auto Queue!", chat_id, message_id, reply_markup=back_btn("faq"))
         elif call.data == "faq_contact":
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("✈️ کەناڵی تەلەگرام", url="https://t.me/YAKUZA_CEO3"))
             markup.add(InlineKeyboardButton("▶️ یوتیوب", url="https://www.youtube.com/@YAKUZA_CEO"))
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="faq"))
-            bot.edit_message_text(
-                "📞 پەیوەندی بەیاکوزا\n\nلە ئەم کەناڵانەوە دەتوانیت پەیوەندی بکەیت:",
-                chat_id, message_id, reply_markup=markup
-            )
-
-        # ── جیهانی هاک ──
+            bot.edit_message_text("📞 پەیوەندی بەیاکوزا", chat_id, message_id, reply_markup=markup)
         elif call.data == "hacker_world":
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("🎯 باشترین هاکەکان", callback_data="best_hacks"))
             markup.add(InlineKeyboardButton("📱 هاکی ئایفۆن", callback_data="ios_hacks"))
             markup.add(InlineKeyboardButton("🤖 هاکی ئەندرۆید", callback_data="android_hacks"))
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="back_to_main"))
-            bot.edit_message_text(
-                "🌍 جیهانی هاک و فێرکاری\n\nهەموو زانیاری لەبارەی هاک و مۆدەکانەوە ئێرەیە! 💪",
-                chat_id, message_id, reply_markup=markup
-            )
-
+            bot.edit_message_text("🌍 جیهانی هاک و فێرکاری\n\nهەموو زانیاری لەبارەی هاک و مۆدەکانەوە ئێرەیە! 💪", chat_id, message_id, reply_markup=markup)
         elif call.data == "best_hacks":
-            text = ("🎯 باشترین هاکەکان بۆ ئەکاونت\n\n"
-                "🟢 باشترینەکان (Security زۆر باشە)\n"
-                "👑 AIM KING (ژخرا باشتر)\n"
-                "🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n"
-                "⚠️ ئەمانە تەنها لەسەر ئەکاونتی Guest\n"
-                "🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n"
-                "❌ ئەمانە بەکارمەهێنە (کراک کراون)")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("hacker_world"))
-
+            bot.edit_message_text("🎯 باشترین هاکەکان بۆ ئەکاونت\n\n🟢 باشترینەکان\n👑 AIM KING (ژخرا باشتر)\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ تەنها لەسەر Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n❌ بەکارمەهێنە (کراک کراون)", chat_id, message_id, reply_markup=back_btn("hacker_world"))
         elif call.data == "ios_hacks":
-            text = ("📱 باشترین هاکەکان بۆ ئایفۆن\n\n"
-                "✅ ئەمانە ئەکاونتت باند ناکەن\n"
-                "💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n"
-                "💡 پێشنیار: لەسەر ئەکاونتی Guest یاری بکە!")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("hacker_world"))
-
+            bot.edit_message_text("📱 باشترین هاکەکان بۆ ئایفۆن\n\n✅ ئەکاونتت باند ناکەن\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n💡 لەسەر Guest یاری بکە!", chat_id, message_id, reply_markup=back_btn("hacker_world"))
         elif call.data == "android_hacks":
-            text = ("🤖 باشترین هاکەکان بۆ ئەندرۆید\n\n"
-                "✅ Security باشە\n"
-                "👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n"
-                "⚠️ تەنها لەسەر ئەکاونتی Guest\n"
-                "🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("hacker_world"))
-
-        # ── چارەسەری باندبوون ──
+            bot.edit_message_text("🤖 باشترین هاکەکان بۆ ئەندرۆید\n\n✅ ئەکاونتی خۆت\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ تەنها لەسەر Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine", chat_id, message_id, reply_markup=back_btn("hacker_world"))
         elif call.data == "anti_ban_info":
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("🛡️ پاراستنی ئەکاونت", callback_data="protect_account"))
@@ -205,50 +126,19 @@ def callback_query(call):
             markup.add(InlineKeyboardButton("🎯 تیپی کێشانی گوڵە", callback_data="shot_tips"))
             markup.add(InlineKeyboardButton("🔧 چارەسەری Play Protect", callback_data="fix_install"))
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="back_to_main"))
-            bot.edit_message_text(
-                "🛡️ چارەسەری باندبوون\n\nهەموو زانیاری بۆ پاراستنی ئەکاونتەکەت! 💪",
-                chat_id, message_id, reply_markup=markup
-            )
-
+            bot.edit_message_text("🛡️ چارەسەری باندبوون\n\nهەموو زانیاری بۆ پاراستنی ئەکاونتەکەت! 💪", chat_id, message_id, reply_markup=markup)
         elif call.data == "protect_account":
-            text = ("ئەری تەدڤێت ئەکاونتی تەیی شەخسی باند نەبێت دیف فان فەرمانا هەرە 👇\n\n"
-                "هەمی گافا Auto Play بکارنەینە ئەو دبێتە ئەگەری باندبونا لیگایی ژی\n\n"
-                "چجارا Auto Queue بکارنەینە گەلەک یا خەتەرە\n\n"
-                "وەختئ تو داری دکێشی چ کوشنا نەدە ئاسای توپی ببە\n\n"
-                "ئەڤە ئەو هاکن کو باشترینن و Security زور باشە بو باندبونی 👇\n\n"
-                "👑 AIM KING (ژخرا باشتر)\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n"
-                "بو ئایفونی باشترین کو ئەکاونتی تە باند نەبێت 👇\n\n"
-                "💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n"
-                "ئەو هاکئن پێدڤیە لەسەر ئەکاونتی Guest یاریی بکە 👇\n\n"
-                "🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n"
-                "و ئێت زخرا خرابتر ئەون ئێت (کراک کری) خو ژی پارێزن")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
-
+            bot.edit_message_text("ئەری تەدڤێت ئەکاونتی تەیی شەخسی باند نەبێت دیف فان فەرمانا هەرە 👇\n\nهەمی گافا Auto Play بکارنەینە ئەو دبێتە ئەگەری باندبونا لیگایی ژی\n\nچجارا Auto Queue بکارنەینە گەلەک یا خەتەرە\n\nوەختئ تو داری دکێشی چ کوشنا نەدە ئاسای توپی ببە\n\nئەڤە ئەو هاکن کو باشترینن 👇\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\nبو ئایفون 👇\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\nتەنها لەسەر Guest 👇\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\nو ئێت زخرا خرابتر ئەون ئێت (کراک کری) خو ژی پارێزن", chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
         elif call.data == "auto_play_settings":
-            text = ("⚙️ ڕێکخستنی Auto Play\n\n"
-                "❌ Auto Play بەکارمەهێنە!\nئەمە دەبێتە هۆی باندبوونی لیگایی\n\n"
-                "❌ Auto Queue بەکارمەهێنە!\nزۆر خەتەرناکە\n\n"
-                "✅ پێشنیار:\nهەموو شتێک دەستی بکە")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
-
+            bot.edit_message_text("⚙️ ڕێکخستنی Auto Play\n\n❌ Auto Play بەکارمەهێنە!\nدەبێتە هۆی باندبوونی لیگایی\n\n❌ Auto Queue بەکارمەهێنە!\nزۆر خەتەرناکە\n\n✅ هەموو شتێک دەستی بکە", chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
         elif call.data == "shot_tips":
-            text = ("🎯 تیپی کێشانی گوڵە\n\n"
-                "وەختئ تو داری دکێشی چ کوشنا نەدە ئاسای توپی ببە\n\n"
-                "💡 پێشنیار:\nپێش کێشانی گوڵە هاکەکە چالاک بکە\n"
-                "دوای گوڵەکە دەستی ببە")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
-
+            bot.edit_message_text("🎯 تیپی کێشانی گوڵە\n\nوەختئ تو داری دکێشی چ کوشنا نەدە ئاسای توپی ببە\n\n💡 پێش کێشانی گوڵە هاکەکە چالاک بکە\nدوای گوڵەکە دەستی ببە", chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
         elif call.data == "fix_install":
-            text = ("🔧 چارەسەری Play Protect\n\n"
-                "١. Play Store بکەرەوە\n"
-                "٢. کلیک لەسەر پرۆفایل\n"
-                "٣. Play Protect هەڵبژێرە\n"
-                "٤. کوژاندنەوە\n\n"
-                "✅ ئێستا دەتوانیت Install بکەیت!")
-            bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
-
+            bot.edit_message_text("🔧 چارەسەری Play Protect\n\n١. Play Store بکەرەوە\n٢. کلیک لەسەر پرۆفایل\n٣. Play Protect هەڵبژێرە\n٤. کوژاندنەوە\n\n✅ ئێستا دەتوانیت Install بکەیت!", chat_id, message_id, reply_markup=back_btn("anti_ban_info"))
     except Exception as e:
         print(f"Error: {e}")
 
 print("✅ بۆتەکە دەستی پێکرد!")
 bot.infinity_polling()
+PYEOF
+echo "done"
