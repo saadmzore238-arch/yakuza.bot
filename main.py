@@ -1,7 +1,10 @@
 import telebot
+import os
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-BOT_TOKEN = '8982730336:AAFJBOZC40eU-RGmvDPG0ErNY3WZz28LJqA'
+# تۆکن نوکە ژ سێرڤەری (Environment Variables) دێ هێت، نهێ د کۆدی دا
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+
 bot = telebot.TeleBot(BOT_TOKEN)
 CHANNEL = '@YAKUZA_CEO3'
 
@@ -63,7 +66,7 @@ def callback_query(call):
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="back_to_main"))
             bot.edit_message_text("🌍 جیهانی هاک و فێرکاری\n\nهەموو زانیاری لەبارەی هاک و مۆدەکانەوە ئێرەیە! 💪", chat_id, message_id, reply_markup=markup)
         elif call.data == "best_hacks":
-            text = "🎯 باشترین هاکەکان بۆ ئەکاونت\n\n🟢 باشترینەکان (Security زۆر باشە)\n👑 AIM KING (ژخرا باشتر)\n🐍 Snake\n⚙ Kos Engine\n🥷 Ninja Engine\n\n⚠️ ئەمانە تەنها لەسەر ئەکاونتی Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n❌ ئەمانە بەکارمەهێنە (کراک کراون)"
+            text = "🎯 باشترین هاکەکان بۆ ئەکاونت\n\n🟢 باشترینەکان (Security زۆر باشە)\n👑 AIM KING (ژخرا باشتر)\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ ئەمانە تەنها لەسەر ئەکاونتی Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n❌ ئەمانە بەکارمەهێنە (کراک کراون)"
             bot.edit_message_text(text, chat_id, message_id, reply_markup=back_btn("hacker_world"))
         elif call.data == "ios_hacks":
             text = "📱 باشترین هاکەکان بۆ ئایفۆن\n\n✅ ئەمانە ئەکاونتت باند ناکەن\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n💡 پێشنیار: لەسەر ئەکاونتی Guest یاری بکە!"
