@@ -6,7 +6,7 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 # دڵنیابە ڤی ناڤی ل پشکا Variables ل سەر Railway داناینە: BOT_TOKEN
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
-CHANNELS = ["@Ninjaengine11", "@YAKUZA_CEO3"]
+CHANNELS = ["@YAKUZA_CEO3"]
 
 
 def is_subscribed(user_id):
