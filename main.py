@@ -1,7 +1,7 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-BOT_TOKEN = 'YOUR_TOKEN_HERE'
+BOT_TOKEN = '8982730336:AAFJBOZC40eU-RGmvDPG0ErNY3WZz28LJqA'
 bot = telebot.TeleBot(BOT_TOKEN)
 CHANNEL = '@YAKUZA_CEO3'
 
