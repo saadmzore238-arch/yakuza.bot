@@ -193,7 +193,7 @@ def callback_query(call):
         elif call.data == "gift_code":
             markup = InlineKeyboardMarkup()
             markup.add(InlineKeyboardButton("⬅️ گەڕانەوە", callback_data="back_to_main"))
-            bot.edit_message_text("🔑 کۆدی هەدیەکەت بنووسە!\n\nکۆدەکە بنووسە و بینێرە بۆ بۆتەکە!\n\n💡 کۆدی نموونە: YAKUZA2024", chat_id, message_id, reply_markup=markup)
+            bot.edit_message_text("🔑 کۆدی هەدیەکەت بنووسە!\n\nکۆدەکە بنووسە و بینێرە بۆ بۆتەکە!\n\n💡 کۆدی نموونە: YAKUZAFREE2026", chat_id, message_id, reply_markup=markup)
 
         # ── بەختەکەت ──
         elif call.data == "lucky":
