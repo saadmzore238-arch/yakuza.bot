@@ -39,19 +39,31 @@ def is_subscribed(user_id):
         return False
 
 def main_menu(user_id=None):
-    markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton("🚀 نوێترین هاک", callback_data="get_latest_hack"))
-    markup.add(InlineKeyboardButton("🛡️ چارەسەری باندبوون", callback_data="anti_ban_info"))
-    markup.add(InlineKeyboardButton("🌍 جیهانی هاک", callback_data="hacker_world"))
-    markup.add(InlineKeyboardButton("🎰 بەختەکەت تاقی بکەرەوە", callback_data="lucky"))
-    markup.add(InlineKeyboardButton("❓ پرسیار و وەڵام", callback_data="faq"))
-    markup.add(InlineKeyboardButton("🎮 یاریەکی ڕاندەم", callback_data="random_game"))
-    markup.add(InlineKeyboardButton("🏆 لیستی باشترین هاکەران", callback_data="leaderboard"))
-    markup.add(InlineKeyboardButton("🎁 هەدیەی ڕۆژانە", callback_data="daily_gift"))
-    markup.add(InlineKeyboardButton("🔑 کۆدی هەدیە", callback_data="gift_code"))
-    markup.add(InlineKeyboardButton("📊 ئامارەکانم", callback_data="my_stats"))
-    markup.add(InlineKeyboardButton("🌐 گۆڕینی زمان", callback_data="change_lang"))
-    markup.add(InlineKeyboardButton("📱 فرۆشگای یاکوزا", url="https://saadmzore238-arch.github.io/My.apps/"))
+    markup = InlineKeyboardMarkup(row_width=2)
+    markup.add(
+        InlineKeyboardButton("🚀 نوێترین هاک", callback_data="get_latest_hack"),
+        InlineKeyboardButton("🛡️ چارەسەری باند", callback_data="anti_ban_info")
+    )
+    markup.add(
+        InlineKeyboardButton("🌍 جیهانی هاک", callback_data="hacker_world"),
+        InlineKeyboardButton("🎰 بەختەکەت", callback_data="lucky")
+    )
+    markup.add(
+        InlineKeyboardButton("❓ پرسیار و وەڵام", callback_data="faq"),
+        InlineKeyboardButton("🎮 یاریەکی ڕاندەم", callback_data="random_game")
+    )
+    markup.add(
+        InlineKeyboardButton("🏆 باشترین هاکەران", callback_data="leaderboard"),
+        InlineKeyboardButton("🎁 هەدیەی ڕۆژانە", callback_data="daily_gift")
+    )
+    markup.add(
+        InlineKeyboardButton("🔑 کۆدی هەدیە", callback_data="gift_code"),
+        InlineKeyboardButton("📊 ئامارەکانم", callback_data="my_stats")
+    )
+    markup.add(
+        InlineKeyboardButton("🌐 گۆڕینی زمان", callback_data="change_lang"),
+        InlineKeyboardButton("📱 فرۆشگای یاکوزا", url="https://saadmzore238-arch.github.io/My.apps/")
+    )
     markup.add(InlineKeyboardButton("📢 کەناڵی ئێمە", url="https://t.me/YAKUZA_CEO3"))
     return markup
 
