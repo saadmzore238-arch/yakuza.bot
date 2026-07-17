@@ -10,242 +10,147 @@ CHANNEL = '@YAKUZA_CEO3'
 
 user_stats = {}
 user_langs = {}
+user_points = {}
+user_referrals = {}
 daily_claimed = {}
 gift_codes = {
-    'YAKUZAFREE2026': {'ku': '🎁 کۆدەکە ڕاستە! خۆش بە! 🔥', 'ar': '🎁 الكود صحيح! استمتع! 🔥', 'en': '🎁 Code is valid! Enjoy! 🔥'},
-    'FREE100': {'ku': '🎁 بەخشێنراوی تایبەت وەرگرتیت! 💎', 'ar': '🎁 حصلت على هدية مميزة! 💎', 'en': '🎁 You got a special gift! 💎'},
-    'HACKFREE2026': {'ku': '🎁 هاکی تایبەت بۆت کراوەتەوە! 🎮', 'ar': '🎁 تم فتح هاك مميز لك! 🎮', 'en': '🎁 Special hack unlocked for you! 🎮'}
+    'YAKUZA2024': {'ku': '🎁 کۆدەکە ڕاستە! خۆش بە! 🔥 +50 خاڵ', 'ar': '🎁 الكود صحيح! استمتع! 🔥 +50 نقطة', 'en': '🎁 Code is valid! Enjoy! 🔥 +50 points'},
+    'FREE100': {'ku': '🎁 بەخشێنراوی تایبەت! 💎 +100 خاڵ', 'ar': '🎁 هدية مميزة! 💎 +100 نقطة', 'en': '🎁 Special gift! 💎 +100 points'},
+    'HACK2024': {'ku': '🎁 هاکی تایبەت کراوەتەوە! 🎮 +75 خاڵ', 'ar': '🎁 تم فتح هاك مميز! 🎮 +75 نقطة', 'en': '🎁 Special hack unlocked! 🎮 +75 points'}
 }
+code_points = {'YAKUZAFREE2026': 50, 'FREE100': 100, 'HACK2026': 75}
 
 T = {
     'ku': {
-        'select_lang': '🌐 زمانەکەت هەڵبژێرە:',
-        'welcome': 'بەخێربێیت',
-        'bot_name': 'بۆتی فەرمی یاکوزا ستۆر 🎮',
+        'select_lang': '🌐 زمانەکەت هەڵبژێرە:', 'welcome': 'بەخێربێیت', 'bot_name': 'بۆتی فەرمی یاکوزا ستۆر 🎮',
         'join_msg': '❌ پێویستە سەرەتا بچیتە ناو کەناڵەکەمەوە!\n\n👇 جۆین بکە پاشان چێک بکەرەوە',
-        'join_btn': '✅ جۆین بکە 📢',
-        'check_btn': '🔄 چێک بکەرەوە',
-        'not_joined': '❌ هێشتا جۆین نەکردووی!',
-        'back': '⬅️ گەڕانەوە',
-        'btn_hack': '🚀 نوێترین هاک',
-        'btn_anti': '🛡️ چارەسەری باند',
-        'btn_world': '🌍 جیهانی هاک',
-        'btn_lucky': '🎰 بەختەکەت',
-        'btn_faq': '❓ پرسیار و وەڵام',
-        'btn_game': '🎮 یاریەکی ڕاندەم',
-        'btn_lead': '🏆 باشترین هاکەران',
-        'btn_daily': '🎁 هەدیەی ڕۆژانە',
-        'btn_code': '🔑 کۆدی هەدیە',
-        'btn_stats': '📊 ئامارەکانم',
-        'btn_lang': '🌐 گۆڕینی زمان',
-        'btn_store': '📱 فرۆشگای یاکوزا',
-        'btn_channel': '📢 کەناڵی ئێمە',
-        'latest_hack': '🔥 هاکە نوێەکان لە کەناڵەکەمان دان!',
-        'faq_title': '❓ پرسیار و وەڵام\n\nکام پرسیارت هەیە؟',
-        'faq_q1': '❓ چۆن ئەپەکان دابەزێنم؟',
-        'faq_q2': '❓ ئایا ئەپەکان بەخۆڕاین؟',
-        'faq_q3': '❓ چۆن Install بکەم؟',
-        'faq_q4': '❓ ئایا ئەکاونتم باند دەبێت؟',
-        'faq_q5': '❓ پەیوەندی بەیاکوزا',
+        'join_btn': '✅ جۆین بکە 📢', 'check_btn': '🔄 چێک بکەرەوە', 'not_joined': '❌ هێشتا جۆین نەکردووی!', 'back': '⬅️ گەڕانەوە',
+        'btn_hack': '🚀 نوێترین هاک', 'btn_anti': '🛡️ چارەسەری باند', 'btn_world': '🌍 جیهانی هاک', 'btn_lucky': '🎰 بەختەکەت',
+        'btn_faq': '❓ پرسیار و وەڵام', 'btn_game': '🎮 یاریەکی ڕاندەم', 'btn_lead': '🏆 باشترین هاکەران', 'btn_daily': '🎁 هەدیەی ڕۆژانە',
+        'btn_code': '🔑 کۆدی هەدیە', 'btn_stats': '📊 ئامارەکانم', 'btn_lang': '🌐 گۆڕینی زمان', 'btn_store': '📱 فرۆشگای یاکوزا',
+        'btn_channel': '📢 کەناڵی ئێمە', 'btn_points': '🪙 خاڵەکانم', 'btn_ref': '⭐ بانگهێشتی هاوڕێ',
+        'latest_hack': '🔥 هاکە نوێەکان لە کەناڵەکەمان دان!', 'faq_title': '❓ پرسیار و وەڵام\n\nکام پرسیارت هەیە؟',
+        'faq_q1': '❓ چۆن ئەپەکان دابەزێنم؟', 'faq_q2': '❓ ئایا ئەپەکان بەخۆڕاین؟', 'faq_q3': '❓ چۆن Install بکەم؟',
+        'faq_q4': '❓ ئایا ئەکاونتم باند دەبێت؟', 'faq_q5': '❓ پەیوەندی بەیاکوزا',
         'faq_a1': '❓ چۆن ئەپەکان دابەزێنم؟\n\n✅ وەڵام:\n١. بچۆ بۆ فرۆشگای یاکوزا\n٢. ئەپەکەی دەتەوێت هەڵبژێرە\n٣. دوگمەی داونلۆد داپبەژێ\n٤. فایلەکە دادەبەزێت',
         'faq_a2': '❓ ئایا ئەپەکان بەخۆڕاین؟\n\n✅ بەڵێ! هەموو ئەپەکانی یاکوزا ستۆر بەخۆڕاین! 🎉',
-        'faq_install_q': '❓ چۆن Install بکەم؟\n\nکام مۆبایلت هەیە؟',
-        'faq_ios': '📱 iPhone',
-        'faq_android': '🤖 Android',
+        'faq_install_q': '❓ چۆن Install بکەم؟\n\nکام مۆبایلت هەیە؟', 'faq_ios': '📱 iPhone', 'faq_android': '🤖 Android',
         'faq_ios_a': '📱 Install کردن لەسەر iPhone\n\n١. AltStore دابەزێنە\n٢. فایلی IPA داونلۆد بکە\n٣. لە AltStore Install بکە\n\nیان TrollStore (iOS 14-16)',
         'faq_android_a': '🤖 Install کردن لەسەر ئەندرۆید\n\n١. APK داونلۆد بکە\n٢. Unknown Sources چالاک بکە\n٣. Install بکە ✅',
         'faq_a4': '❓ ئایا ئەکاونتم باند دەبێت؟\n\n✅ ئەگەر هاکی باش بەکاربهێنیت باند نابیت!\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n\nئاگادار بە لە Auto Play!',
-        'faq_contact': '📞 پەیوەندی بەیاکوزا',
-        'hacker_world': '🌍 جیهانی هاک و فێرکاری 💪',
-        'btn_best': '🎯 باشترین هاکەکان',
-        'btn_ios': '📱 هاکی ئایفۆن',
-        'btn_droid': '🤖 هاکی ئەندرۆید',
+        'faq_contact': '📞 پەیوەندی بەیاکوزا', 'hacker_world': '🌍 جیهانی هاک و فێرکاری 💪',
+        'btn_best': '🎯 باشترین هاکەکان', 'btn_ios': '📱 هاکی ئایفۆن', 'btn_droid': '🤖 هاکی ئەندرۆید',
         'best_hacks': '🎯 باشترین هاکەکان\n\n🟢 ئەکاونتی خۆت\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ تەنها Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n❌ کراک کراو مەکاربهێنە',
         'ios_hacks': '📱 هاکی ئایفۆن\n\n✅ باند ناکەن\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n💡 لەسەر Guest یاری بکە!',
         'android_hacks': '🤖 هاکی ئەندرۆید\n\n✅ ئەکاونتی خۆت\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ تەنها Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine',
-        'anti_ban': '🛡️ چارەسەری باندبوون 💪',
-        'btn_protect': '🛡️ پاراستنی ئەکاونت',
-        'btn_autoplay': '⚙️ Auto Play',
-        'btn_shot': '🎯 تیپی گوڵەکێشان',
-        'btn_protect2': '🔧 Play Protect',
+        'anti_ban': '🛡️ چارەسەری باندبوون 💪', 'btn_protect': '🛡️ پاراستنی ئەکاونت', 'btn_autoplay': '⚙️ Auto Play',
+        'btn_shot': '🎯 تیپی گوڵەکێشان', 'btn_protect2': '🔧 Play Protect',
         'protect_account': 'ئەری تەدڤێت ئەکاونتی تەیی شەخسی باند نەبێت دیف فان فەرمانا هەرە 👇\n\nهەمی گافا Auto Play بکارنەینە ئەو دبێتە ئەگەری باندبونا لیگایی ژی\n\nچجارا Auto Queue بکارنەینە گەلەک یا خەتەرە\n\nوەختئ تو داری دکێشی چ کوشنا نەدە ئاسای توپی ببە\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\nبو ئایفون 👇\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\nتەنها Guest 👇\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\nو ئێت زخرا خرابتر ئەون ئێت (کراک کری) خو ژی پارێزن',
         'autoplay': '⚙️ Auto Play\n\n❌ Auto Play بەکارمەهێنە!\n❌ Auto Queue بەکارمەهێنە!\n\n✅ هەموو شتێک دەستی بکە',
         'shot_tips': '🎯 تیپی گوڵەکێشان\n\nوەختئ تو داری دکێشی چ کوشنا نەدە ئاسای توپی ببە\n\n💡 هاکەکە چالاک بکە پێش کێشان',
         'play_protect': '🔧 Play Protect\n\n١. Play Store بکەرەوە\n٢. پرۆفایل\n٣. Play Protect\n٤. کوژاندنەوە\n\n✅ ئێستا Install بکە!',
-        'lucky_title': '🎰 بەختی ئەمڕۆی',
-        'lucky_retry': '🔄 دووبارە تاقی بکەرەوە',
-        'stats_title': '📊 ئامارەکانت',
-        'stats_clicks': '🔢 کۆی کلیکەکان',
-        'stats_lang': '🌐 زمانەکەت',
-        'stats_date': '📅 ئەمڕۆ',
-        'lead_title': '🏆 لیستی باشترین بەکارهێنەران',
-        'lead_rank': '📊 جێگای تۆ',
-        'lead_empty': 'هێشتا کەس نییە!',
-        'lead_clicks': 'کلیک',
-        'daily_claimed': '❌ ئەمڕۆ هەدیەکەت وەرگرتووە!\n\n⏰ سبەی دووبارە بگەڕێوە!',
-        'daily_title': '🎁 هەدیەی ڕۆژانەت!',
-        'daily_back': '✅ سبەی دووبارە بگەڕێوە!',
-        'gift_prompt': '🔑 کۆدی هەدیەکەت بنووسە!\n\n💡 کۆدی نموونە: YAKUZA2024',
-        'gift_invalid': '❌ کۆدەکە هەڵەیە!',
-        'random_title': '🎮 یاریەکی ڕاندەم بۆت هەڵبژێردرا!',
-        'random_retry': '🔄 یارییەکی تر',
-        'random_dl': '📱 داونلۆد بکە',
-        'lang_changed': '✅ زمانەکەت گۆڕدرا!'
+        'lucky_title': '🎰 بەختی ئەمڕۆی', 'lucky_retry': '🔄 دووبارە تاقی بکەرەوە',
+        'stats_title': '📊 ئامارەکانت', 'stats_clicks': '🔢 کۆی کلیکەکان', 'stats_lang': '🌐 زمانەکەت', 'stats_date': '📅 ئەمڕۆ',
+        'lead_title': '🏆 لیستی باشترین بەکارهێنەران', 'lead_rank': '📊 جێگای تۆ', 'lead_empty': 'هێشتا کەس نییە!', 'lead_clicks': 'کلیک',
+        'daily_claimed': '❌ ئەمڕۆ هەدیەکەت وەرگرتووە!\n\n⏰ سبەی دووبارە بگەڕێوە!', 'daily_title': '🎁 هەدیەی ڕۆژانەت!',
+        'daily_back': '✅ سبەی دووبارە بگەڕێوە!', 'gift_prompt': '🔑 کۆدی هەدیەکەت بنووسە!\n\n💡 کۆدی نموونە: YAKUZA2024',
+        'gift_invalid': '❌ کۆدەکە هەڵەیە!', 'random_title': '🎮 یاریەکی ڕاندەم بۆت هەڵبژێردرا!', 'random_retry': '🔄 یارییەکی تر',
+        'random_dl': '📱 داونلۆد بکە', 'lang_changed': '✅ زمانەکەت گۆڕدرا!',
+        'points_title': '🪙 خاڵەکانت', 'points_have': '💰 خاڵی هەیە', 'points_earn': '📈 چۆن خاڵ کۆبکەمەوە؟',
+        'points_info': '🪙 چۆن خاڵ کۆبکەمەوە؟\n\n✅ ڕێگاکان:\n🔑 کۆدی هەدیە: 50-100 خاڵ\n🎁 هەدیەی ڕۆژانە: 10-30 خاڵ\n⭐ بانگهێشتی هاوڕێ: 25 خاڵ بۆ هەر هاوڕێیەک',
+        'ref_title': '⭐ بانگهێشتی هاوڕێ', 'ref_desc': 'لینکی تایبەتی خۆت بنێرە بۆ هاوڕێکانت!\n\nبۆ هەر هاوڕێیەک کە بەم لینکە دێتە بۆتەکە، 25 خاڵ وەردەگریت! 🎉',
+        'ref_link': '🔗 لینکی تۆ', 'ref_count': '👥 ژمارەی بانگهێشتەکان', 'ref_share': '📤 هاوبەش بکە',
+        'new_ref': '🎉 هاوڕێیەک بەڕێی تۆ هاتووە بۆ بۆتەکە! +25 خاڵ 🪙'
     },
     'ar': {
-        'select_lang': '🌐 اختر لغتك:',
-        'welcome': 'أهلاً وسهلاً',
-        'bot_name': 'بوت ياكوزا ستور الرسمي 🎮',
+        'select_lang': '🌐 اختر لغتك:', 'welcome': 'أهلاً وسهلاً', 'bot_name': 'بوت ياكوزا ستور الرسمي 🎮',
         'join_msg': '❌ يجب عليك الانضمام للقناة أولاً!\n\n👇 انضم ثم تحقق',
-        'join_btn': '✅ انضم الآن 📢',
-        'check_btn': '🔄 تحقق',
-        'not_joined': '❌ لم تنضم بعد!',
-        'back': '⬅️ رجوع',
-        'btn_hack': '🚀 أحدث الهاكات',
-        'btn_anti': '🛡️ حل الباند',
-        'btn_world': '🌍 عالم الهاك',
-        'btn_lucky': '🎰 جرب حظك',
-        'btn_faq': '❓ أسئلة وأجوبة',
-        'btn_game': '🎮 لعبة عشوائية',
-        'btn_lead': '🏆 أفضل الهاكرز',
-        'btn_daily': '🎁 هدية يومية',
-        'btn_code': '🔑 كود هدية',
-        'btn_stats': '📊 إحصائياتي',
-        'btn_lang': '🌐 تغيير اللغة',
-        'btn_store': '📱 متجر ياكوزا',
-        'btn_channel': '📢 قناتنا',
-        'latest_hack': '🔥 أحدث الهاكات في قناتنا!',
-        'faq_title': '❓ أسئلة وأجوبة\n\nما هو سؤالك؟',
-        'faq_q1': '❓ كيف أحمل التطبيقات؟',
-        'faq_q2': '❓ هل التطبيقات مجانية؟',
-        'faq_q3': '❓ كيف أثبت؟',
-        'faq_q4': '❓ هل سيتم باند حسابي؟',
-        'faq_q5': '❓ تواصل مع ياكوزا',
+        'join_btn': '✅ انضم الآن 📢', 'check_btn': '🔄 تحقق', 'not_joined': '❌ لم تنضم بعد!', 'back': '⬅️ رجوع',
+        'btn_hack': '🚀 أحدث الهاكات', 'btn_anti': '🛡️ حل الباند', 'btn_world': '🌍 عالم الهاك', 'btn_lucky': '🎰 جرب حظك',
+        'btn_faq': '❓ أسئلة وأجوبة', 'btn_game': '🎮 لعبة عشوائية', 'btn_lead': '🏆 أفضل الهاكرز', 'btn_daily': '🎁 هدية يومية',
+        'btn_code': '🔑 كود هدية', 'btn_stats': '📊 إحصائياتي', 'btn_lang': '🌐 تغيير اللغة', 'btn_store': '📱 متجر ياكوزا',
+        'btn_channel': '📢 قناتنا', 'btn_points': '🪙 نقاطي', 'btn_ref': '⭐ دعوة صديق',
+        'latest_hack': '🔥 أحدث الهاكات في قناتنا!', 'faq_title': '❓ أسئلة وأجوبة\n\nما هو سؤالك؟',
+        'faq_q1': '❓ كيف أحمل التطبيقات؟', 'faq_q2': '❓ هل التطبيقات مجانية؟', 'faq_q3': '❓ كيف أثبت؟',
+        'faq_q4': '❓ هل سيتم باند حسابي؟', 'faq_q5': '❓ تواصل مع ياكوزا',
         'faq_a1': '❓ كيف أحمل التطبيقات؟\n\n✅ الجواب:\n١. اذهب لمتجر ياكوزا\n٢. اختر التطبيق\n٣. اضغط تحميل\n٤. سيتم التحميل تلقائياً',
         'faq_a2': '❓ هل التطبيقات مجانية؟\n\n✅ نعم! كل تطبيقات ياكوزا مجانية! 🎉',
-        'faq_install_q': '❓ كيف أثبت؟\n\nما هو جهازك؟',
-        'faq_ios': '📱 iPhone',
-        'faq_android': '🤖 Android',
+        'faq_install_q': '❓ كيف أثبت؟\n\nما هو جهازك؟', 'faq_ios': '📱 iPhone', 'faq_android': '🤖 Android',
         'faq_ios_a': '📱 التثبيت على iPhone\n\n١. حمل AltStore\n٢. حمل ملف IPA\n٣. ثبت من AltStore\n\nأو استخدم TrollStore (iOS 14-16)',
         'faq_android_a': '🤖 التثبيت على أندرويد\n\n١. حمل ملف APK\n٢. فعّل Unknown Sources\n٣. ثبت ✅',
         'faq_a4': '❓ هل سيتم باند حسابي؟\n\n✅ إذا استخدمت هاك جيد لن يتم الباند!\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n\nانتبه من Auto Play!',
-        'faq_contact': '📞 تواصل مع ياكوزا',
-        'hacker_world': '🌍 عالم الهاك والتعليم 💪',
-        'btn_best': '🎯 أفضل الهاكات',
-        'btn_ios': '📱 هاك iPhone',
-        'btn_droid': '🤖 هاك Android',
+        'faq_contact': '📞 تواصل مع ياكوزا', 'hacker_world': '🌍 عالم الهاك والتعليم 💪',
+        'btn_best': '🎯 أفضل الهاكات', 'btn_ios': '📱 هاك iPhone', 'btn_droid': '🤖 هاك Android',
         'best_hacks': '🎯 أفضل الهاكات\n\n🟢 لحسابك الشخصي\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ فقط على Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n❌ لا تستخدم المكركة',
         'ios_hacks': '📱 هاك iPhone\n\n✅ لن يتم باند حسابك\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n💡 العب على Guest!',
         'android_hacks': '🤖 هاك Android\n\n✅ حسابك الشخصي\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ فقط Guest\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine',
-        'anti_ban': '🛡️ حل الباند 💪',
-        'btn_protect': '🛡️ حماية الحساب',
-        'btn_autoplay': '⚙️ Auto Play',
-        'btn_shot': '🎯 نصائح الرمي',
-        'btn_protect2': '🔧 Play Protect',
+        'anti_ban': '🛡️ حل الباند 💪', 'btn_protect': '🛡️ حماية الحساب', 'btn_autoplay': '⚙️ Auto Play',
+        'btn_shot': '🎯 نصائح الرمي', 'btn_protect2': '🔧 Play Protect',
         'protect_account': 'لحماية حسابك من الباند اتبع هذه التعليمات 👇\n\nلا تستخدم Auto Play فهو سبب الباند في الليغ\n\nلا تستخدم Auto Queue فهو خطير جداً\n\nعند رمي الكرة لا تضغط زر التصويب العادي\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\nلـ iPhone 👇\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\nفقط على Guest 👇\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\nالهاكات المكركة تجنبها',
         'autoplay': '⚙️ Auto Play\n\n❌ لا تستخدم Auto Play!\n❌ لا تستخدم Auto Queue!\n\n✅ افعل كل شيء يدوياً',
         'shot_tips': '🎯 نصائح الرمي\n\nعند رمي الكرة لا تضغط زر التصويب العادي\n\n💡 فعّل الهاك قبل الرمي',
         'play_protect': '🔧 Play Protect\n\n١. افتح Play Store\n٢. الملف الشخصي\n٣. Play Protect\n٤. أوقفه\n\n✅ الآن يمكنك التثبيت!',
-        'lucky_title': '🎰 حظ اليوم لـ',
-        'lucky_retry': '🔄 جرب مرة أخرى',
-        'stats_title': '📊 إحصائياتك',
-        'stats_clicks': '🔢 إجمالي النقرات',
-        'stats_lang': '🌐 لغتك',
-        'stats_date': '📅 اليوم',
-        'lead_title': '🏆 قائمة أفضل المستخدمين',
-        'lead_rank': '📊 مرتبتك',
-        'lead_empty': 'لا يوجد أحد بعد!',
-        'lead_clicks': 'نقرة',
-        'daily_claimed': '❌ لقد أخذت هديتك اليوم!\n\n⏰ عد غداً!',
-        'daily_title': '🎁 هديتك اليومية!',
-        'daily_back': '✅ عد غداً!',
-        'gift_prompt': '🔑 اكتب كود الهدية!\n\n💡 مثال: YAKUZAFREE2026',
-        'gift_invalid': '❌ الكود غير صحيح!',
-        'random_title': '🎮 تم اختيار لعبة عشوائية لك!',
-        'random_retry': '🔄 لعبة أخرى',
-        'random_dl': '📱 تحميل',
-        'lang_changed': '✅ تم تغيير اللغة!'
+        'lucky_title': '🎰 حظ اليوم لـ', 'lucky_retry': '🔄 جرب مرة أخرى',
+        'stats_title': '📊 إحصائياتك', 'stats_clicks': '🔢 إجمالي النقرات', 'stats_lang': '🌐 لغتك', 'stats_date': '📅 اليوم',
+        'lead_title': '🏆 قائمة أفضل المستخدمين', 'lead_rank': '📊 مرتبتك', 'lead_empty': 'لا يوجد أحد بعد!', 'lead_clicks': 'نقرة',
+        'daily_claimed': '❌ لقد أخذت هديتك اليوم!\n\n⏰ عد غداً!', 'daily_title': '🎁 هديتك اليومية!',
+        'daily_back': '✅ عد غداً!', 'gift_prompt': '🔑 اكتب كود الهدية!\n\n💡 مثال: YAKUZA2024',
+        'gift_invalid': '❌ الكود غير صحيح!', 'random_title': '🎮 تم اختيار لعبة عشوائية لك!', 'random_retry': '🔄 لعبة أخرى',
+        'random_dl': '📱 تحميل', 'lang_changed': '✅ تم تغيير اللغة!',
+        'points_title': '🪙 نقاطك', 'points_have': '💰 لديك نقاط', 'points_earn': '📈 كيف أجمع النقاط؟',
+        'points_info': '🪙 كيف أجمع النقاط؟\n\n✅ الطرق:\n🔑 كود هدية: 50-100 نقطة\n🎁 هدية يومية: 10-30 نقطة\n⭐ دعوة صديق: 25 نقطة لكل صديق',
+        'ref_title': '⭐ دعوة صديق', 'ref_desc': 'أرسل رابطك الخاص لأصدقائك!\n\nلكل صديق ينضم عبر رابطك، تحصل على 25 نقطة! 🎉',
+        'ref_link': '🔗 رابطك', 'ref_count': '👥 عدد الدعوات', 'ref_share': '📤 شارك',
+        'new_ref': '🎉 صديق انضم عن طريقك للبوت! +25 نقطة 🪙'
     },
     'en': {
-        'select_lang': '🌐 Select your language:',
-        'welcome': 'Welcome',
-        'bot_name': 'Yakuza Store Official Bot 🎮',
+        'select_lang': '🌐 Select your language:', 'welcome': 'Welcome', 'bot_name': 'Yakuza Store Official Bot 🎮',
         'join_msg': '❌ You must join our channel first!\n\n👇 Join then check',
-        'join_btn': '✅ Join Now 📢',
-        'check_btn': '🔄 Check',
-        'not_joined': '❌ You have not joined yet!',
-        'back': '⬅️ Back',
-        'btn_hack': '🚀 Latest Hacks',
-        'btn_anti': '🛡️ Anti Ban',
-        'btn_world': '🌍 Hack World',
-        'btn_lucky': '🎰 Try Your Luck',
-        'btn_faq': '❓ FAQ',
-        'btn_game': '🎮 Random Game',
-        'btn_lead': '🏆 Top Hackers',
-        'btn_daily': '🎁 Daily Gift',
-        'btn_code': '🔑 Gift Code',
-        'btn_stats': '📊 My Stats',
-        'btn_lang': '🌐 Change Language',
-        'btn_store': '📱 Yakuza Store',
-        'btn_channel': '📢 Our Channel',
-        'latest_hack': '🔥 Latest hacks are in our channel!',
-        'faq_title': '❓ FAQ\n\nWhat is your question?',
-        'faq_q1': '❓ How to download apps?',
-        'faq_q2': '❓ Are the apps free?',
-        'faq_q3': '❓ How to install?',
-        'faq_q4': '❓ Will my account get banned?',
-        'faq_q5': '❓ Contact Yakuza',
+        'join_btn': '✅ Join Now 📢', 'check_btn': '🔄 Check', 'not_joined': '❌ You have not joined yet!', 'back': '⬅️ Back',
+        'btn_hack': '🚀 Latest Hacks', 'btn_anti': '🛡️ Anti Ban', 'btn_world': '🌍 Hack World', 'btn_lucky': '🎰 Try Your Luck',
+        'btn_faq': '❓ FAQ', 'btn_game': '🎮 Random Game', 'btn_lead': '🏆 Top Hackers', 'btn_daily': '🎁 Daily Gift',
+        'btn_code': '🔑 Gift Code', 'btn_stats': '📊 My Stats', 'btn_lang': '🌐 Change Language', 'btn_store': '📱 Yakuza Store',
+        'btn_channel': '📢 Our Channel', 'btn_points': '🪙 My Points', 'btn_ref': '⭐ Invite Friend',
+        'latest_hack': '🔥 Latest hacks are in our channel!', 'faq_title': '❓ FAQ\n\nWhat is your question?',
+        'faq_q1': '❓ How to download apps?', 'faq_q2': '❓ Are the apps free?', 'faq_q3': '❓ How to install?',
+        'faq_q4': '❓ Will my account get banned?', 'faq_q5': '❓ Contact Yakuza',
         'faq_a1': '❓ How to download apps?\n\n✅ Answer:\n1. Go to Yakuza Store\n2. Choose the app\n3. Press download\n4. File will download',
         'faq_a2': '❓ Are the apps free?\n\n✅ Yes! All Yakuza Store apps are free! 🎉',
-        'faq_install_q': '❓ How to install?\n\nWhat device do you have?',
-        'faq_ios': '📱 iPhone',
-        'faq_android': '🤖 Android',
+        'faq_install_q': '❓ How to install?\n\nWhat device do you have?', 'faq_ios': '📱 iPhone', 'faq_android': '🤖 Android',
         'faq_ios_a': '📱 Install on iPhone\n\n1. Download AltStore\n2. Download IPA file\n3. Install from AltStore\n\nOr use TrollStore (iOS 14-16)',
         'faq_android_a': '🤖 Install on Android\n\n1. Download APK file\n2. Enable Unknown Sources\n3. Install ✅',
         'faq_a4': '❓ Will my account get banned?\n\n✅ If you use good hacks you won\'t get banned!\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n\nBeware of Auto Play!',
-        'faq_contact': '📞 Contact Yakuza',
-        'hacker_world': '🌍 Hack World & Tutorials 💪',
-        'btn_best': '🎯 Best Hacks',
-        'btn_ios': '📱 iPhone Hacks',
-        'btn_droid': '🤖 Android Hacks',
+        'faq_contact': '📞 Contact Yakuza', 'hacker_world': '🌍 Hack World & Tutorials 💪',
+        'btn_best': '🎯 Best Hacks', 'btn_ios': '📱 iPhone Hacks', 'btn_droid': '🤖 Android Hacks',
         'best_hacks': '🎯 Best Hacks\n\n🟢 Your personal account\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ Guest account only\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\n❌ Do not use cracked hacks',
         'ios_hacks': '📱 iPhone Hacks\n\n✅ Won\'t ban your account\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\n💡 Play on Guest account!',
         'android_hacks': '🤖 Android Hacks\n\n✅ Personal account\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\n⚠️ Guest only\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine',
-        'anti_ban': '🛡️ Anti Ban 💪',
-        'btn_protect': '🛡️ Account Protection',
-        'btn_autoplay': '⚙️ Auto Play',
-        'btn_shot': '🎯 Shot Tips',
-        'btn_protect2': '🔧 Play Protect',
+        'anti_ban': '🛡️ Anti Ban 💪', 'btn_protect': '🛡️ Account Protection', 'btn_autoplay': '⚙️ Auto Play',
+        'btn_shot': '🎯 Shot Tips', 'btn_protect2': '🔧 Play Protect',
         'protect_account': 'To protect your account from ban follow these tips 👇\n\nNever use Auto Play it causes league ban\n\nNever use Auto Queue it is very dangerous\n\nWhen shooting do not press the normal shot button\n\n👑 AIM KING\n🐍 Snake\n⚙️ Kos Engine\n🥷 Ninja Engine\n\nFor iPhone 👇\n💎 Flourite\n⚔️ MW Cheat\n🥷 Ninja Engine\n\nGuest only 👇\n🕷️ Spider Engine\n💎 KPMods\n🎯 AimX\n🔮 Glass Engine\n\nAvoid cracked hacks',
         'autoplay': '⚙️ Auto Play\n\n❌ Never use Auto Play!\n❌ Never use Auto Queue!\n\n✅ Do everything manually',
         'shot_tips': '🎯 Shot Tips\n\nWhen shooting do not press the normal shot button\n\n💡 Activate hack before shooting',
         'play_protect': '🔧 Play Protect\n\n1. Open Play Store\n2. Profile\n3. Play Protect\n4. Disable it\n\n✅ Now you can install!',
-        'lucky_title': '🎰 Today\'s Luck for',
-        'lucky_retry': '🔄 Try Again',
-        'stats_title': '📊 Your Stats',
-        'stats_clicks': '🔢 Total Clicks',
-        'stats_lang': '🌐 Your Language',
-        'stats_date': '📅 Today',
-        'lead_title': '🏆 Top Users Leaderboard',
-        'lead_rank': '📊 Your rank',
-        'lead_empty': 'No one yet!',
-        'lead_clicks': 'clicks',
-        'daily_claimed': '❌ You already claimed today\'s gift!\n\n⏰ Come back tomorrow!',
-        'daily_title': '🎁 Your Daily Gift!',
-        'daily_back': '✅ Come back tomorrow!',
-        'gift_prompt': '🔑 Enter your gift code!\n\n💡 Example: YAKUZAFREE2026',
-        'gift_invalid': '❌ Invalid code!',
-        'random_title': '🎮 A random game was picked for you!',
-        'random_retry': '🔄 Another Game',
-        'random_dl': '📱 Download',
-        'lang_changed': '✅ Language changed!'
+        'lucky_title': '🎰 Today\'s Luck for', 'lucky_retry': '🔄 Try Again',
+        'stats_title': '📊 Your Stats', 'stats_clicks': '🔢 Total Clicks', 'stats_lang': '🌐 Your Language', 'stats_date': '📅 Today',
+        'lead_title': '🏆 Top Users Leaderboard', 'lead_rank': '📊 Your rank', 'lead_empty': 'No one yet!', 'lead_clicks': 'clicks',
+        'daily_claimed': '❌ You already claimed today\'s gift!\n\n⏰ Come back tomorrow!', 'daily_title': '🎁 Your Daily Gift!',
+        'daily_back': '✅ Come back tomorrow!', 'gift_prompt': '🔑 Enter your gift code!\n\n💡 Example: YAKUZA2024',
+        'gift_invalid': '❌ Invalid code!', 'random_title': '🎮 A random game was picked for you!', 'random_retry': '🔄 Another Game',
+        'random_dl': '📱 Download', 'lang_changed': '✅ Language changed!',
+        'points_title': '🪙 Your Points', 'points_have': '💰 Points you have', 'points_earn': '📈 How to earn points?',
+        'points_info': '🪙 How to earn points?\n\n✅ Ways:\n🔑 Gift code: 50-100 points\n🎁 Daily gift: 10-30 points\n⭐ Invite friend: 25 points per friend',
+        'ref_title': '⭐ Invite Friend', 'ref_desc': 'Send your special link to your friends!\n\nFor every friend who joins via your link, you get 25 points! 🎉',
+        'ref_link': '🔗 Your Link', 'ref_count': '👥 Invite Count', 'ref_share': '📤 Share',
+        'new_ref': '🎉 A friend joined via your link! +25 points 🪙'
     }
 }
 
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
-def add_stat(uid):
-    user_stats[uid] = user_stats.get(uid, 0) + 1
+def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
+def add_points(uid, pts): user_points[uid] = user_points.get(uid, 0) + pts
+def get_points(uid): return user_points.get(uid, 0)
 
 def is_subscribed(uid):
     try:
@@ -272,6 +177,8 @@ def main_menu(uid):
           InlineKeyboardButton(t(uid,'btn_daily'), callback_data="daily_gift"))
     m.add(InlineKeyboardButton(t(uid,'btn_code'), callback_data="gift_code"),
           InlineKeyboardButton(t(uid,'btn_stats'), callback_data="my_stats"))
+    m.add(InlineKeyboardButton(t(uid,'btn_points'), callback_data="my_points"),
+          InlineKeyboardButton(t(uid,'btn_ref'), callback_data="invite_friend"))
     m.add(InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"),
           InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
     m.add(InlineKeyboardButton(t(uid,'btn_channel'), url="https://t.me/YAKUZA_CEO3"))
@@ -293,6 +200,23 @@ def start(message):
     uid = message.from_user.id
     name = message.from_user.first_name or "👋"
     add_stat(uid)
+
+    # ── چێک بۆ ڕیفێرال ──
+    args = message.text.split()
+    if len(args) > 1 and args[1].startswith('ref'):
+        try:
+            ref_id = int(args[1].replace('ref', ''))
+            if ref_id != uid and uid not in user_referrals.get(ref_id, []):
+                if ref_id not in user_referrals:
+                    user_referrals[ref_id] = []
+                user_referrals[ref_id].append(uid)
+                add_points(ref_id, 25)
+                try:
+                    ref_lang = get_lang(ref_id) or 'ku'
+                    bot.send_message(ref_id, T[ref_lang]['new_ref'])
+                except: pass
+        except: pass
+
     if get_lang(uid) is None:
         bot.send_message(message.chat.id, f"سڵاو {name} 👋\n\n" + T['ku']['select_lang'] + "\n" + T['ar']['select_lang'] + "\n" + T['en']['select_lang'], reply_markup=lang_select_markup())
     elif is_subscribed(uid):
@@ -306,6 +230,7 @@ def handle_text(message):
     text = message.text.strip().upper()
     if text in gift_codes:
         lang = get_lang(uid) or 'ku'
+        add_points(uid, code_points.get(text, 0))
         bot.send_message(message.chat.id, gift_codes[text][lang])
     else:
         add_stat(uid)
@@ -319,7 +244,6 @@ def cb(call):
     add_stat(uid)
 
     try:
-        # زمان
         if call.data.startswith("lang_"):
             lang = call.data.split("_")[1]
             user_langs[uid] = lang
@@ -343,6 +267,25 @@ def cb(call):
         elif call.data == "get_latest_hack":
             bot.answer_callback_query(call.id, t(uid,'latest_hack'), show_alert=True)
 
+        # ── خاڵەکانم ──
+        elif call.data == "my_points":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'points_earn'), callback_data="points_info"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(f"{t(uid,'points_title')} {name}\n\n🪙 {t(uid,'points_have')}: {get_points(uid)}", cid, mid, reply_markup=mm)
+
+        elif call.data == "points_info":
+            bot.edit_message_text(t(uid,'points_info'), cid, mid, reply_markup=back_btn(uid,"my_points"))
+
+        # ── بانگهێشتی هاوڕێ ──
+        elif call.data == "invite_friend":
+            bot_username = bot.get_me().username
+            link = f"https://t.me/{bot_username}?start=ref{uid}"
+            count = len(user_referrals.get(uid, []))
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(f"{t(uid,'ref_title')}\n\n{t(uid,'ref_desc')}\n\n{t(uid,'ref_link')}:\n{link}\n\n{t(uid,'ref_count')}: {count}", cid, mid, reply_markup=mm)
+
         elif call.data == "lucky":
             results_ku = [("🏆 باشترین بەخت!", "ئەمڕۆ ڕۆژی تۆیە! 🌟"), ("🎯 بەختی باش!", "یاری بکە و ببەرە! 🎮"), ("💎 بەختی نزم!", "ئاگاداربە! 😅"), ("🔥 بەختی گەرم!", "هیچ شتێک ناتوانێت بیتەپێچێنێت! 💪"), ("⚡ بەختی بریق!", "بەردەوام بە! ⚡"), ("🌙 بەختی ناو ناو!", "ئاسایییە! 🌙"), ("🎰 بەختی زەیف!", "ئاگاداربە برا! 😬")]
             results_ar = [("🏆 أفضل حظ!", "اليوم يومك! 🌟"), ("🎯 حظ جيد!", "العب وانتصر! 🎮"), ("💎 حظ منخفض!", "كن حذراً! 😅"), ("🔥 حظ ساخن!", "لا شيء يوقفك! 💪"), ("⚡ حظ مشرق!", "استمر! ⚡"), ("🌙 حظ متوسط!", "عادي! 🌙"), ("🎰 حظ ضعيف!", "كن حذراً! 😬")]
@@ -359,7 +302,7 @@ def cb(call):
             count = user_stats.get(uid, 0)
             lang = get_lang(uid) or 'ku'
             lang_name = 'کوردی' if lang=='ku' else 'عربي' if lang=='ar' else 'English'
-            bot.edit_message_text(f"{t(uid,'stats_title')} {name}\n\n{t(uid,'stats_clicks')}: {count}\n{t(uid,'stats_lang')}: {lang_name}\n{t(uid,'stats_date')}: {datetime.now().strftime('%Y-%m-%d')}", cid, mid, reply_markup=back_btn(uid))
+            bot.edit_message_text(f"{t(uid,'stats_title')} {name}\n\n{t(uid,'stats_clicks')}: {count}\n{t(uid,'stats_lang')}: {lang_name}\n🪙 {t(uid,'points_have')}: {get_points(uid)}\n{t(uid,'stats_date')}: {datetime.now().strftime('%Y-%m-%d')}", cid, mid, reply_markup=back_btn(uid))
 
         elif call.data == "leaderboard":
             sorted_u = sorted(user_stats.items(), key=lambda x: x[1], reverse=True)[:5]
@@ -380,10 +323,12 @@ def cb(call):
                 bot.edit_message_text(t(uid,'daily_claimed'), cid, mid, reply_markup=back_btn(uid))
             else:
                 daily_claimed[key] = True
+                pts = random.choice([10, 15, 20, 25, 30])
+                add_points(uid, pts)
                 lang = get_lang(uid) or 'ku'
-                gifts_ku = ["🎁 هاکی تایبەت: AIM KING!", "💎 ئەمڕۆ بەختت باشە!", "🔥 Ninja Engine تاقی بکەرەوە!", "⚡ Snake هاک بەکاربهێنە!", "🏆 ئەمڕۆ ڕۆژی تۆیە!"]
-                gifts_ar = ["🎁 هاك مميز: AIM KING!", "💎 حظك اليوم جيد!", "🔥 جرب Ninja Engine!", "⚡ استخدم Snake هاك!", "🏆 اليوم يومك!"]
-                gifts_en = ["🎁 Special hack: AIM KING!", "💎 Your luck is good today!", "🔥 Try Ninja Engine!", "⚡ Use Snake hack!", "🏆 Today is your day!"]
+                gifts_ku = [f"🎁 هاکی تایبەت: AIM KING! +{pts} خاڵ", f"💎 ئەمڕۆ بەختت باشە! +{pts} خاڵ", f"🔥 Ninja Engine تاقی بکەرەوە! +{pts} خاڵ", f"⚡ Snake هاک بەکاربهێنە! +{pts} خاڵ", f"🏆 ئەمڕۆ ڕۆژی تۆیە! +{pts} خاڵ"]
+                gifts_ar = [f"🎁 هاك مميز: AIM KING! +{pts} نقطة", f"💎 حظك اليوم جيد! +{pts} نقطة", f"🔥 جرب Ninja Engine! +{pts} نقطة", f"⚡ استخدم Snake هاك! +{pts} نقطة", f"🏆 اليوم يومك! +{pts} نقطة"]
+                gifts_en = [f"🎁 Special hack: AIM KING! +{pts} points", f"💎 Your luck is good today! +{pts} points", f"🔥 Try Ninja Engine! +{pts} points", f"⚡ Use Snake hack! +{pts} points", f"🏆 Today is your day! +{pts} points"]
                 gifts = gifts_ku if lang=='ku' else gifts_ar if lang=='ar' else gifts_en
                 bot.edit_message_text(f"{t(uid,'daily_title')}\n\n{random.choice(gifts)}\n\n{t(uid,'daily_back')}", cid, mid, reply_markup=back_btn(uid))
 
