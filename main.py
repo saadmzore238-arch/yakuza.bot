@@ -17,6 +17,14 @@ user_first_time = {}
 daily_claimed = {}
 guess_number = {}
 awaiting_broadcast = {}
+user_achievements = {}
+user_streak = {}
+user_last_active = {}
+user_nickname = {}
+user_favorites = {}
+user_blocked = set()
+weekly_points = {}
+
 
 gift_codes = {
     'YAKUZA2024': {'ku': '🎁 کۆدەکە ڕاستە! +50 خاڵ 🔥', 'ar': '🎁 الكود صحيح! +50 نقطة 🔥', 'en': '🎁 Valid code! +50 points 🔥'},
@@ -202,6 +210,67 @@ T = {
     }
 }
 
+
+EXTRA_T = {
+    'ku': {
+        'btn_wheel': '🎡 چەرخی بەخت', 'btn_dice': '🎳 تاسی بەخت', 'btn_achieve': '🎖️ باجەکانم', 'btn_streak': '📅 بەردەوامیم',
+        'btn_nickname': '📝 نازناوم', 'btn_fav': '📋 لیستی تایبەتم', 'btn_gift_pts': '💌 خاڵ بنێرە', 'btn_weekly': '🏅 پێشبڕکێی هەفتانە',
+        'btn_report': '⚠️ ڕاپۆرت کردن', 'btn_admin': '👑 پانێڵی ئەدمین',
+        'wheel_title': '🎡 چەرخی بەخت', 'wheel_spin': '🎡 بجولێنە!', 'wheel_result': '🎡 ئەنجامەکەت:',
+        'dice_title': '🎳 تاسی بەخت', 'dice_roll': '🎲 فڕێی بدە!', 'dice_result': '🎲 تاسەکەت:',
+        'achieve_title': '🎖️ باجەکانت', 'achieve_locked': '🔒 نەکراوەتەوە', 'achieve_unlocked': '✅ کراوەتەوە',
+        'streak_title': '📅 بەردەوامیت', 'streak_days': 'ڕۆژ بەردەوام', 'streak_today': '✅ ئەمڕۆ هاتووی!',
+        'nickname_prompt': '📝 نازناوی نوێت بنووسە:', 'nickname_set': '✅ نازناوەکەت گۆڕدرا بۆ:',
+        'fav_title': '📋 لیستی تایبەتت', 'fav_empty': 'هیچ ئەپێکت زیاد نەکردووە!', 'fav_added': '✅ زیاد کرا بۆ لیستەکەت!',
+        'gift_pts_prompt': '💌 ID ی بەکارهێنەرەکە و ژمارەی خاڵ بنووسە\n\nنموونە: 123456 10',
+        'gift_pts_sent': '✅ خاڵ نێردرا!', 'gift_pts_received': '🎁 خاڵت وەرگرت لە هاوڕێیەک!',
+        'weekly_title': '🏅 پێشبڕکێی هەفتانە', 'weekly_desc': 'باشترین بەکارهێنەری ئەم هەفتەیە!',
+        'report_prompt': '⚠️ کێشەکەت بنووسە، دەگاتە ئەدمین:', 'report_sent': '✅ ڕاپۆرتەکەت نێردرا بۆ ئەدمین!',
+        'admin_panel': '👑 پانێڵی ئەدمین', 'admin_users': '👥 کۆی بەکارهێنەران', 'admin_broadcast': '📢 Broadcast',
+        'ach_click10': '🥉 10 کلیک', 'ach_click50': '🥈 50 کلیک', 'ach_click100': '🥇 100 کلیک',
+        'ach_points100': '💰 100 خاڵ', 'ach_ref5': '⭐ 5 بانگهێشت', 'ach_streak7': '🔥 7 ڕۆژ بەردەوام'
+    },
+    'ar': {
+        'btn_wheel': '🎡 عجلة الحظ', 'btn_dice': '🎳 نرد الحظ', 'btn_achieve': '🎖️ إنجازاتي', 'btn_streak': '📅 تتابعي',
+        'btn_nickname': '📝 لقبي', 'btn_fav': '📋 قائمتي المفضلة', 'btn_gift_pts': '💌 أرسل نقاط', 'btn_weekly': '🏅 مسابقة أسبوعية',
+        'btn_report': '⚠️ إبلاغ', 'btn_admin': '👑 لوحة الإدارة',
+        'wheel_title': '🎡 عجلة الحظ', 'wheel_spin': '🎡 أدر!', 'wheel_result': '🎡 نتيجتك:',
+        'dice_title': '🎳 نرد الحظ', 'dice_roll': '🎲 ارمِ!', 'dice_result': '🎲 نردك:',
+        'achieve_title': '🎖️ إنجازاتك', 'achieve_locked': '🔒 مقفل', 'achieve_unlocked': '✅ مفتوح',
+        'streak_title': '📅 تتابعك', 'streak_days': 'يوم متتالي', 'streak_today': '✅ جئت اليوم!',
+        'nickname_prompt': '📝 اكتب لقبك الجديد:', 'nickname_set': '✅ تم تغيير لقبك إلى:',
+        'fav_title': '📋 قائمتك المفضلة', 'fav_empty': 'لم تضف أي تطبيق!', 'fav_added': '✅ تمت الإضافة لقائمتك!',
+        'gift_pts_prompt': '💌 اكتب ID المستخدم وعدد النقاط\n\nمثال: 123456 10',
+        'gift_pts_sent': '✅ تم إرسال النقاط!', 'gift_pts_received': '🎁 حصلت على نقاط من صديق!',
+        'weekly_title': '🏅 مسابقة أسبوعية', 'weekly_desc': 'أفضل مستخدم هذا الأسبوع!',
+        'report_prompt': '⚠️ اكتب مشكلتك، ستصل للإدارة:', 'report_sent': '✅ تم إرسال بلاغك للإدارة!',
+        'admin_panel': '👑 لوحة الإدارة', 'admin_users': '👥 إجمالي المستخدمين', 'admin_broadcast': '📢 Broadcast',
+        'ach_click10': '🥉 10 نقرات', 'ach_click50': '🥈 50 نقرة', 'ach_click100': '🥇 100 نقرة',
+        'ach_points100': '💰 100 نقطة', 'ach_ref5': '⭐ 5 دعوات', 'ach_streak7': '🔥 7 أيام متتالية'
+    },
+    'en': {
+        'btn_wheel': '🎡 Lucky Wheel', 'btn_dice': '🎳 Lucky Dice', 'btn_achieve': '🎖️ My Achievements', 'btn_streak': '📅 My Streak',
+        'btn_nickname': '📝 My Nickname', 'btn_fav': '📋 My Favorites', 'btn_gift_pts': '💌 Send Points', 'btn_weekly': '🏅 Weekly Contest',
+        'btn_report': '⚠️ Report Issue', 'btn_admin': '👑 Admin Panel',
+        'wheel_title': '🎡 Lucky Wheel', 'wheel_spin': '🎡 Spin!', 'wheel_result': '🎡 Your result:',
+        'dice_title': '🎳 Lucky Dice', 'dice_roll': '🎲 Roll!', 'dice_result': '🎲 Your dice:',
+        'achieve_title': '🎖️ Your Achievements', 'achieve_locked': '🔒 Locked', 'achieve_unlocked': '✅ Unlocked',
+        'streak_title': '📅 Your Streak', 'streak_days': 'days in a row', 'streak_today': '✅ You came today!',
+        'nickname_prompt': '📝 Type your new nickname:', 'nickname_set': '✅ Your nickname changed to:',
+        'fav_title': '📋 Your Favorites List', 'fav_empty': 'You haven\'t added any apps!', 'fav_added': '✅ Added to your list!',
+        'gift_pts_prompt': '💌 Type user ID and points amount\n\nExample: 123456 10',
+        'gift_pts_sent': '✅ Points sent!', 'gift_pts_received': '🎁 You received points from a friend!',
+        'weekly_title': '🏅 Weekly Contest', 'weekly_desc': 'Best user of this week!',
+        'report_prompt': '⚠️ Type your issue, it will reach the admin:', 'report_sent': '✅ Your report sent to admin!',
+        'admin_panel': '👑 Admin Panel', 'admin_users': '👥 Total Users', 'admin_broadcast': '📢 Broadcast',
+        'ach_click10': '🥉 10 clicks', 'ach_click50': '🥈 50 clicks', 'ach_click100': '🥇 100 clicks',
+        'ach_points100': '💰 100 points', 'ach_ref5': '⭐ 5 invites', 'ach_streak7': '🔥 7 day streak'
+    }
+}
+
+for lang in T:
+    T[lang].update(EXTRA_T[lang])
+
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
@@ -215,6 +284,37 @@ def get_vip_level(uid, lang='ku'):
     elif pts >= 300: return T[lang]['vip_silver']
     elif pts >= 100: return T[lang]['vip_bronze']
     else: return T[lang]['vip_none']
+
+
+def update_streak(uid):
+    today = datetime.now().strftime('%Y-%m-%d')
+    last = user_last_active.get(uid)
+    if last != today:
+        if last:
+            from datetime import timedelta
+            last_date = datetime.strptime(last, '%Y-%m-%d')
+            if (datetime.now() - last_date).days == 1:
+                user_streak[uid] = user_streak.get(uid, 0) + 1
+            else:
+                user_streak[uid] = 1
+        else:
+            user_streak[uid] = 1
+        user_last_active[uid] = today
+    return user_streak.get(uid, 0)
+
+def check_achievements(uid, lang):
+    unlocked = []
+    clicks = user_stats.get(uid, 0)
+    pts = user_points.get(uid, 0)
+    refs = len(user_referrals.get(uid, []))
+    streak = user_streak.get(uid, 0)
+    if clicks >= 10: unlocked.append(T[lang]['ach_click10'])
+    if clicks >= 50: unlocked.append(T[lang]['ach_click50'])
+    if clicks >= 100: unlocked.append(T[lang]['ach_click100'])
+    if pts >= 100: unlocked.append(T[lang]['ach_points100'])
+    if refs >= 5: unlocked.append(T[lang]['ach_ref5'])
+    if streak >= 7: unlocked.append(T[lang]['ach_streak7'])
+    return unlocked
 
 def is_subscribed(uid):
     try:
@@ -247,8 +347,19 @@ def main_menu(uid):
           InlineKeyboardButton(t(uid,'btn_guess'), callback_data="guess_start"))
     m.add(InlineKeyboardButton(t(uid,'btn_vip'), callback_data="vip_info"),
           InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"))
+    m.add(InlineKeyboardButton(t(uid,'btn_wheel'), callback_data="wheel_spin"),
+          InlineKeyboardButton(t(uid,'btn_dice'), callback_data="dice_roll"))
+    m.add(InlineKeyboardButton(t(uid,'btn_achieve'), callback_data="my_achievements"),
+          InlineKeyboardButton(t(uid,'btn_streak'), callback_data="my_streak"))
+    m.add(InlineKeyboardButton(t(uid,'btn_nickname'), callback_data="set_nickname"),
+          InlineKeyboardButton(t(uid,'btn_fav'), callback_data="my_favorites"))
+    m.add(InlineKeyboardButton(t(uid,'btn_gift_pts'), callback_data="gift_points"),
+          InlineKeyboardButton(t(uid,'btn_weekly'), callback_data="weekly_contest"))
+    m.add(InlineKeyboardButton(t(uid,'btn_report'), callback_data="report_issue"))
     m.add(InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
     m.add(InlineKeyboardButton(t(uid,'btn_channel'), url="https://t.me/YAKUZA_CEO3"))
+    if uid == ADMIN_ID:
+        m.add(InlineKeyboardButton(t(uid,'btn_admin'), callback_data="admin_panel"))
     return m
 
 def back_btn(uid, data="back_to_main"):
@@ -267,6 +378,7 @@ def start(message):
     uid = message.from_user.id
     name = message.from_user.first_name or "👋"
     add_stat(uid)
+    update_streak(uid)
     is_first = uid not in user_first_time
     if is_first:
         user_first_time[uid] = True
@@ -303,6 +415,42 @@ def broadcast_cmd(message):
 def handle_text(message):
     uid = message.from_user.id
     text = message.text.strip()
+
+    # ── نازناو ──
+    if awaiting_broadcast.get(f"nick_{uid}"):
+        awaiting_broadcast[f"nick_{uid}"] = False
+        user_nickname[uid] = text
+        bot.send_message(message.chat.id, f"{t(uid,'nickname_set')} {text}")
+        return
+
+    # ── ناردنی خاڵ ──
+    if awaiting_broadcast.get(f"giftpts_{uid}"):
+        awaiting_broadcast[f"giftpts_{uid}"] = False
+        try:
+            parts = text.split()
+            target_id, amount = int(parts[0]), int(parts[1])
+            if get_points(uid) >= amount:
+                user_points[uid] -= amount
+                add_points(target_id, amount)
+                bot.send_message(message.chat.id, t(uid,'gift_pts_sent'))
+                try:
+                    target_lang = get_lang(target_id) or 'ku'
+                    bot.send_message(target_id, T[target_lang]['gift_pts_received'] + f" +{amount} 🪙")
+                except: pass
+            else:
+                bot.send_message(message.chat.id, "❌")
+        except:
+            bot.send_message(message.chat.id, "❌")
+        return
+
+    # ── ڕاپۆرت ──
+    if awaiting_broadcast.get(f"report_{uid}"):
+        awaiting_broadcast[f"report_{uid}"] = False
+        try:
+            bot.send_message(ADMIN_ID, f"⚠️ Report from {uid}:\n\n{text}")
+        except: pass
+        bot.send_message(message.chat.id, t(uid,'report_sent'))
+        return
 
     # ── Broadcast ──
     if uid == ADMIN_ID and awaiting_broadcast.get(uid):
@@ -553,6 +701,101 @@ def cb(call):
             bot.edit_message_text(t(uid,'shot_tips'), cid, mid, reply_markup=back_btn(uid,"anti_ban_info"))
         elif call.data == "fix_install":
             bot.edit_message_text(t(uid,'play_protect'), cid, mid, reply_markup=back_btn(uid,"anti_ban_info"))
+
+
+        # ── چەرخی بەخت ──
+        elif call.data == "wheel_spin":
+            pts = random.choice([5, 10, 15, 20, 25, 30, 50])
+            add_points(uid, pts)
+            emojis = ["🍒","🍋","💎","⭐","7️⃣","🔔","🍀"]
+            result = " ".join(random.choices(emojis, k=3))
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'wheel_spin'), callback_data="wheel_spin"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(f"{t(uid,'wheel_title')}\n\n{result}\n\n{t(uid,'wheel_result')} +{pts} 🪙", cid, mid, reply_markup=mm)
+
+        # ── تاسی بەخت ──
+        elif call.data == "dice_roll":
+            d1, d2 = random.randint(1,6), random.randint(1,6)
+            pts = (d1 + d2) * 2
+            add_points(uid, pts)
+            dice_emoji = ["⚀","⚁","⚂","⚃","⚄","⚅"]
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'dice_roll'), callback_data="dice_roll"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(f"{t(uid,'dice_title')}\n\n{dice_emoji[d1-1]} {dice_emoji[d2-1]}\n\n{t(uid,'dice_result')} {d1}+{d2} = +{pts} 🪙", cid, mid, reply_markup=mm)
+
+        # ── باجەکان ──
+        elif call.data == "my_achievements":
+            lang = get_lang(uid) or 'ku'
+            unlocked = check_achievements(uid, lang)
+            all_ach = [T[lang]['ach_click10'], T[lang]['ach_click50'], T[lang]['ach_click100'], T[lang]['ach_points100'], T[lang]['ach_ref5'], T[lang]['ach_streak7']]
+            text = f"{t(uid,'achieve_title')}\n\n"
+            for a in all_ach:
+                status = t(uid,'achieve_unlocked') if a in unlocked else t(uid,'achieve_locked')
+                text += f"{a}: {status}\n"
+            bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid))
+
+        # ── بەردەوامی ──
+        elif call.data == "my_streak":
+            streak = update_streak(uid)
+            bot.edit_message_text(f"{t(uid,'streak_title')}\n\n🔥 {streak} {t(uid,'streak_days')}\n\n{t(uid,'streak_today')}", cid, mid, reply_markup=back_btn(uid))
+
+        # ── نازناو ──
+        elif call.data == "set_nickname":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            awaiting_broadcast[f"nick_{uid}"] = True
+            bot.edit_message_text(t(uid,'nickname_prompt'), cid, mid, reply_markup=mm)
+
+        # ── لیستی تایبەت ──
+        elif call.data == "my_favorites":
+            favs = user_favorites.get(uid, [])
+            text = f"{t(uid,'fav_title')}\n\n"
+            text += "\n".join(favs) if favs else t(uid,'fav_empty')
+            bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid))
+
+        # ── ناردنی خاڵ ──
+        elif call.data == "gift_points":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            awaiting_broadcast[f"giftpts_{uid}"] = True
+            bot.edit_message_text(t(uid,'gift_pts_prompt'), cid, mid, reply_markup=mm)
+
+        # ── پێشبڕکێی هەفتانە ──
+        elif call.data == "weekly_contest":
+            sorted_u = sorted(weekly_points.items(), key=lambda x: x[1], reverse=True)[:5]
+            medals = ["🥇","🥈","🥉","4️⃣","5️⃣"]
+            text = f"{t(uid,'weekly_title')}\n\n{t(uid,'weekly_desc')}\n\n"
+            if sorted_u:
+                for i,(u,p) in enumerate(sorted_u):
+                    text += f"{medals[i]} #{i+1}: {p} 🪙\n"
+            else:
+                text += t(uid,'lead_empty')
+            bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid))
+
+        # ── ڕاپۆرت ──
+        elif call.data == "report_issue":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            awaiting_broadcast[f"report_{uid}"] = True
+            bot.edit_message_text(t(uid,'report_prompt'), cid, mid, reply_markup=mm)
+
+        # ── پانێڵی ئەدمین ──
+        elif call.data == "admin_panel" and uid == ADMIN_ID:
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'admin_users'), callback_data="admin_users"))
+            mm.add(InlineKeyboardButton(t(uid,'admin_broadcast'), callback_data="admin_broadcast_btn"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(t(uid,'admin_panel'), cid, mid, reply_markup=mm)
+
+        elif call.data == "admin_users" and uid == ADMIN_ID:
+            total = len(user_langs)
+            bot.edit_message_text(f"{t(uid,'admin_users')}: {total}", cid, mid, reply_markup=back_btn(uid,"admin_panel"))
+
+        elif call.data == "admin_broadcast_btn" and uid == ADMIN_ID:
+            awaiting_broadcast[uid] = True
+            bot.edit_message_text(t(uid,'broadcast_prompt'), cid, mid, reply_markup=back_btn(uid,"admin_panel"))
 
     except Exception as e:
         print(f"Error: {e}")
