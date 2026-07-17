@@ -5,6 +5,7 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
+ADMIN_ID = 8982730336  # ئایدی خۆت دابنێ بۆ ئەکسەسی ئەدمین
 bot = telebot.TeleBot(BOT_TOKEN)
 CHANNEL = '@YAKUZA_CEO3'
 
@@ -12,23 +13,47 @@ user_stats = {}
 user_langs = {}
 user_points = {}
 user_referrals = {}
+user_first_time = {}
 daily_claimed = {}
+guess_number = {}
+awaiting_broadcast = {}
+
 gift_codes = {
-    'YAKUZA2024': {'ku': '🎁 کۆدەکە ڕاستە! خۆش بە! 🔥 +50 خاڵ', 'ar': '🎁 الكود صحيح! استمتع! 🔥 +50 نقطة', 'en': '🎁 Code is valid! Enjoy! 🔥 +50 points'},
-    'FREE100': {'ku': '🎁 بەخشێنراوی تایبەت! 💎 +100 خاڵ', 'ar': '🎁 هدية مميزة! 💎 +100 نقطة', 'en': '🎁 Special gift! 💎 +100 points'},
-    'HACK2024': {'ku': '🎁 هاکی تایبەت کراوەتەوە! 🎮 +75 خاڵ', 'ar': '🎁 تم فتح هاك مميز! 🎮 +75 نقطة', 'en': '🎁 Special hack unlocked! 🎮 +75 points'}
+    'YAKUZA2024': {'ku': '🎁 کۆدەکە ڕاستە! +50 خاڵ 🔥', 'ar': '🎁 الكود صحيح! +50 نقطة 🔥', 'en': '🎁 Valid code! +50 points 🔥'},
+    'FREE100': {'ku': '🎁 بەخشێنراوی تایبەت! +100 خاڵ 💎', 'ar': '🎁 هدية مميزة! +100 نقطة 💎', 'en': '🎁 Special gift! +100 points 💎'},
+    'HACK2024': {'ku': '🎁 هاکی تایبەت! +75 خاڵ 🎮', 'ar': '🎁 هاك مميز! +75 نقطة 🎮', 'en': '🎁 Special hack! +75 points 🎮'}
 }
-code_points = {'YAKUZAFREE2026': 50, 'FREE100': 100, 'HACK2026': 75}
+code_points = {'YAKUZA2024': 50, 'FREE100': 100, 'HACK2024': 75}
+
+quiz_questions = {
+    'ku': [
+        {'q': 'کام یاری زۆرترین داونلۆدی هەیە لە یاکوزا ستۆر؟', 'opts': ['8 Ball Pool', 'Roblox', 'GTA'], 'correct': 1},
+        {'q': 'IPA فایل بۆ کام سیستەمە؟', 'opts': ['Android', 'iOS', 'Windows'], 'correct': 1},
+        {'q': 'کام ئەپ بۆ ڕیتاچ کردنی وێنەیە؟', 'opts': ['PicsArt', 'Spotify', 'CapCut'], 'correct': 0},
+    ],
+    'ar': [
+        {'q': 'أي لعبة لديها أكثر تحميلات في ياكوزا ستور؟', 'opts': ['8 Ball Pool', 'Roblox', 'GTA'], 'correct': 1},
+        {'q': 'ملف IPA لأي نظام؟', 'opts': ['Android', 'iOS', 'Windows'], 'correct': 1},
+        {'q': 'أي تطبيق لتعديل الصور؟', 'opts': ['PicsArt', 'Spotify', 'CapCut'], 'correct': 0},
+    ],
+    'en': [
+        {'q': 'Which game has the most downloads on Yakuza Store?', 'opts': ['8 Ball Pool', 'Roblox', 'GTA'], 'correct': 1},
+        {'q': 'IPA file is for which system?', 'opts': ['Android', 'iOS', 'Windows'], 'correct': 1},
+        {'q': 'Which app is for photo editing?', 'opts': ['PicsArt', 'Spotify', 'CapCut'], 'correct': 0},
+    ]
+}
 
 T = {
     'ku': {
         'select_lang': '🌐 زمانەکەت هەڵبژێرە:', 'welcome': 'بەخێربێیت', 'bot_name': 'بۆتی فەرمی یاکوزا ستۆر 🎮',
+        'first_welcome': '🎉 خۆشحاڵین بە یەکەم جار بینینت!\n\nئێمە هیوادارین کاتێکی خۆشت لەگەڵمان بێت! 💜',
         'join_msg': '❌ پێویستە سەرەتا بچیتە ناو کەناڵەکەمەوە!\n\n👇 جۆین بکە پاشان چێک بکەرەوە',
         'join_btn': '✅ جۆین بکە 📢', 'check_btn': '🔄 چێک بکەرەوە', 'not_joined': '❌ هێشتا جۆین نەکردووی!', 'back': '⬅️ گەڕانەوە',
         'btn_hack': '🚀 نوێترین هاک', 'btn_anti': '🛡️ چارەسەری باند', 'btn_world': '🌍 جیهانی هاک', 'btn_lucky': '🎰 بەختەکەت',
         'btn_faq': '❓ پرسیار و وەڵام', 'btn_game': '🎮 یاریەکی ڕاندەم', 'btn_lead': '🏆 باشترین هاکەران', 'btn_daily': '🎁 هەدیەی ڕۆژانە',
         'btn_code': '🔑 کۆدی هەدیە', 'btn_stats': '📊 ئامارەکانم', 'btn_lang': '🌐 گۆڕینی زمان', 'btn_store': '📱 فرۆشگای یاکوزا',
         'btn_channel': '📢 کەناڵی ئێمە', 'btn_points': '🪙 خاڵەکانم', 'btn_ref': '⭐ بانگهێشتی هاوڕێ',
+        'btn_quiz': '🎲 کوویزی یاری', 'btn_guess': '🎯 ژمارە بدۆزەرەوە', 'btn_vip': '💎 پلەی VIP',
         'latest_hack': '🔥 هاکە نوێەکان لە کەناڵەکەمان دان!', 'faq_title': '❓ پرسیار و وەڵام\n\nکام پرسیارت هەیە؟',
         'faq_q1': '❓ چۆن ئەپەکان دابەزێنم؟', 'faq_q2': '❓ ئایا ئەپەکان بەخۆڕاین؟', 'faq_q3': '❓ چۆن Install بکەم؟',
         'faq_q4': '❓ ئایا ئەکاونتم باند دەبێت؟', 'faq_q5': '❓ پەیوەندی بەیاکوزا',
@@ -57,19 +82,30 @@ T = {
         'gift_invalid': '❌ کۆدەکە هەڵەیە!', 'random_title': '🎮 یاریەکی ڕاندەم بۆت هەڵبژێردرا!', 'random_retry': '🔄 یارییەکی تر',
         'random_dl': '📱 داونلۆد بکە', 'lang_changed': '✅ زمانەکەت گۆڕدرا!',
         'points_title': '🪙 خاڵەکانت', 'points_have': '💰 خاڵی هەیە', 'points_earn': '📈 چۆن خاڵ کۆبکەمەوە؟',
-        'points_info': '🪙 چۆن خاڵ کۆبکەمەوە؟\n\n✅ ڕێگاکان:\n🔑 کۆدی هەدیە: 50-100 خاڵ\n🎁 هەدیەی ڕۆژانە: 10-30 خاڵ\n⭐ بانگهێشتی هاوڕێ: 25 خاڵ بۆ هەر هاوڕێیەک',
-        'ref_title': '⭐ بانگهێشتی هاوڕێ', 'ref_desc': 'لینکی تایبەتی خۆت بنێرە بۆ هاوڕێکانت!\n\nبۆ هەر هاوڕێیەک کە بەم لینکە دێتە بۆتەکە، 25 خاڵ وەردەگریت! 🎉',
-        'ref_link': '🔗 لینکی تۆ', 'ref_count': '👥 ژمارەی بانگهێشتەکان', 'ref_share': '📤 هاوبەش بکە',
-        'new_ref': '🎉 هاوڕێیەک بەڕێی تۆ هاتووە بۆ بۆتەکە! +25 خاڵ 🪙'
+        'points_info': '🪙 چۆن خاڵ کۆبکەمەوە؟\n\n✅ ڕێگاکان:\n🔑 کۆدی هەدیە: 50-100 خاڵ\n🎁 هەدیەی ڕۆژانە: 10-30 خاڵ\n⭐ بانگهێشتی هاوڕێ: 25 خاڵ\n🎲 کوویز: 15 خاڵ\n🎯 دۆزینەوەی ژمارە: 20 خاڵ',
+        'ref_title': '⭐ بانگهێشتی هاوڕێ', 'ref_desc': 'لینکی تایبەتی خۆت بنێرە بۆ هاوڕێکانت!\n\nبۆ هەر هاوڕێیەک، 25 خاڵ وەردەگریت! 🎉',
+        'ref_link': '🔗 لینکی تۆ', 'ref_count': '👥 ژمارەی بانگهێشتەکان',
+        'new_ref': '🎉 هاوڕێیەک بەڕێی تۆ هاتووە! +25 خاڵ 🪙',
+        'quiz_title': '🎲 کوویزی یاری', 'quiz_correct': '✅ وەڵامی ڕاست! +15 خاڵ 🎉', 'quiz_wrong': '❌ وەڵامی هەڵە! دووبارە هەوڵبدە',
+        'guess_title': '🎯 ژمارەیەک لە نێوان 1 و 10 بدۆزەرەوە!\n\nژمارەکە بنووسە:', 'guess_correct': '🎉 ڕاستە! +20 خاڵ 🪙',
+        'guess_wrong': '❌ هەڵەیە! دووبارە هەوڵبدە', 'guess_hint_up': '⬆️ ژمارەکە گەورەترە',
+        'guess_hint_down': '⬇️ ژمارەکە بچووکترە',
+        'vip_title': '💎 پلەی VIP', 'vip_bronze': '🥉 بڕۆنز', 'vip_silver': '🥈 زیو', 'vip_gold': '🥇 زێڕ', 'vip_diamond': '💎 داماند',
+        'vip_none': '⚪ ئاسایی',
+        'vip_info': '💎 پلەکانی VIP\n\n⚪ ئاسایی: 0-99 خاڵ\n🥉 بڕۆنز: 100-299 خاڵ\n🥈 زیو: 300-599 خاڵ\n🥇 زێڕ: 600-999 خاڵ\n💎 داماند: 1000+ خاڵ\n\nپلەی تۆ: ',
+        'broadcast_prompt': '📢 پەیامەکەت بنووسە بۆ ناردن بۆ هەموو بەکارهێنەران:',
+        'broadcast_sent': '✅ پەیامەکە نێردرا بۆ هەموو بەکارهێنەران!'
     },
     'ar': {
         'select_lang': '🌐 اختر لغتك:', 'welcome': 'أهلاً وسهلاً', 'bot_name': 'بوت ياكوزا ستور الرسمي 🎮',
+        'first_welcome': '🎉 سعداء برؤيتك لأول مرة!\n\nنتمنى لك وقتاً ممتعاً معنا! 💜',
         'join_msg': '❌ يجب عليك الانضمام للقناة أولاً!\n\n👇 انضم ثم تحقق',
         'join_btn': '✅ انضم الآن 📢', 'check_btn': '🔄 تحقق', 'not_joined': '❌ لم تنضم بعد!', 'back': '⬅️ رجوع',
         'btn_hack': '🚀 أحدث الهاكات', 'btn_anti': '🛡️ حل الباند', 'btn_world': '🌍 عالم الهاك', 'btn_lucky': '🎰 جرب حظك',
         'btn_faq': '❓ أسئلة وأجوبة', 'btn_game': '🎮 لعبة عشوائية', 'btn_lead': '🏆 أفضل الهاكرز', 'btn_daily': '🎁 هدية يومية',
         'btn_code': '🔑 كود هدية', 'btn_stats': '📊 إحصائياتي', 'btn_lang': '🌐 تغيير اللغة', 'btn_store': '📱 متجر ياكوزا',
         'btn_channel': '📢 قناتنا', 'btn_points': '🪙 نقاطي', 'btn_ref': '⭐ دعوة صديق',
+        'btn_quiz': '🎲 اختبار الألعاب', 'btn_guess': '🎯 خمن الرقم', 'btn_vip': '💎 مستوى VIP',
         'latest_hack': '🔥 أحدث الهاكات في قناتنا!', 'faq_title': '❓ أسئلة وأجوبة\n\nما هو سؤالك؟',
         'faq_q1': '❓ كيف أحمل التطبيقات؟', 'faq_q2': '❓ هل التطبيقات مجانية؟', 'faq_q3': '❓ كيف أثبت؟',
         'faq_q4': '❓ هل سيتم باند حسابي؟', 'faq_q5': '❓ تواصل مع ياكوزا',
@@ -98,19 +134,30 @@ T = {
         'gift_invalid': '❌ الكود غير صحيح!', 'random_title': '🎮 تم اختيار لعبة عشوائية لك!', 'random_retry': '🔄 لعبة أخرى',
         'random_dl': '📱 تحميل', 'lang_changed': '✅ تم تغيير اللغة!',
         'points_title': '🪙 نقاطك', 'points_have': '💰 لديك نقاط', 'points_earn': '📈 كيف أجمع النقاط؟',
-        'points_info': '🪙 كيف أجمع النقاط؟\n\n✅ الطرق:\n🔑 كود هدية: 50-100 نقطة\n🎁 هدية يومية: 10-30 نقطة\n⭐ دعوة صديق: 25 نقطة لكل صديق',
-        'ref_title': '⭐ دعوة صديق', 'ref_desc': 'أرسل رابطك الخاص لأصدقائك!\n\nلكل صديق ينضم عبر رابطك، تحصل على 25 نقطة! 🎉',
-        'ref_link': '🔗 رابطك', 'ref_count': '👥 عدد الدعوات', 'ref_share': '📤 شارك',
-        'new_ref': '🎉 صديق انضم عن طريقك للبوت! +25 نقطة 🪙'
+        'points_info': '🪙 كيف أجمع النقاط؟\n\n✅ الطرق:\n🔑 كود هدية: 50-100 نقطة\n🎁 هدية يومية: 10-30 نقطة\n⭐ دعوة صديق: 25 نقطة\n🎲 اختبار: 15 نقطة\n🎯 تخمين الرقم: 20 نقطة',
+        'ref_title': '⭐ دعوة صديق', 'ref_desc': 'أرسل رابطك الخاص لأصدقائك!\n\nلكل صديق، تحصل على 25 نقطة! 🎉',
+        'ref_link': '🔗 رابطك', 'ref_count': '👥 عدد الدعوات',
+        'new_ref': '🎉 صديق انضم عن طريقك! +25 نقطة 🪙',
+        'quiz_title': '🎲 اختبار الألعاب', 'quiz_correct': '✅ إجابة صحيحة! +15 نقطة 🎉', 'quiz_wrong': '❌ إجابة خاطئة! حاول مرة أخرى',
+        'guess_title': '🎯 خمن رقماً بين 1 و 10!\n\nاكتب الرقم:', 'guess_correct': '🎉 صحيح! +20 نقطة 🪙',
+        'guess_wrong': '❌ خاطئ! حاول مرة أخرى', 'guess_hint_up': '⬆️ الرقم أكبر',
+        'guess_hint_down': '⬇️ الرقم أصغر',
+        'vip_title': '💎 مستوى VIP', 'vip_bronze': '🥉 برونزي', 'vip_silver': '🥈 فضي', 'vip_gold': '🥇 ذهبي', 'vip_diamond': '💎 ماسي',
+        'vip_none': '⚪ عادي',
+        'vip_info': '💎 مستويات VIP\n\n⚪ عادي: 0-99 نقطة\n🥉 برونزي: 100-299 نقطة\n🥈 فضي: 300-599 نقطة\n🥇 ذهبي: 600-999 نقطة\n💎 ماسي: 1000+ نقطة\n\nمستواك: ',
+        'broadcast_prompt': '📢 اكتب رسالتك لإرسالها لجميع المستخدمين:',
+        'broadcast_sent': '✅ تم إرسال الرسالة لجميع المستخدمين!'
     },
     'en': {
         'select_lang': '🌐 Select your language:', 'welcome': 'Welcome', 'bot_name': 'Yakuza Store Official Bot 🎮',
+        'first_welcome': '🎉 Happy to see you for the first time!\n\nWe hope you have a great time with us! 💜',
         'join_msg': '❌ You must join our channel first!\n\n👇 Join then check',
         'join_btn': '✅ Join Now 📢', 'check_btn': '🔄 Check', 'not_joined': '❌ You have not joined yet!', 'back': '⬅️ Back',
         'btn_hack': '🚀 Latest Hacks', 'btn_anti': '🛡️ Anti Ban', 'btn_world': '🌍 Hack World', 'btn_lucky': '🎰 Try Your Luck',
         'btn_faq': '❓ FAQ', 'btn_game': '🎮 Random Game', 'btn_lead': '🏆 Top Hackers', 'btn_daily': '🎁 Daily Gift',
         'btn_code': '🔑 Gift Code', 'btn_stats': '📊 My Stats', 'btn_lang': '🌐 Change Language', 'btn_store': '📱 Yakuza Store',
         'btn_channel': '📢 Our Channel', 'btn_points': '🪙 My Points', 'btn_ref': '⭐ Invite Friend',
+        'btn_quiz': '🎲 Game Quiz', 'btn_guess': '🎯 Guess Number', 'btn_vip': '💎 VIP Level',
         'latest_hack': '🔥 Latest hacks are in our channel!', 'faq_title': '❓ FAQ\n\nWhat is your question?',
         'faq_q1': '❓ How to download apps?', 'faq_q2': '❓ Are the apps free?', 'faq_q3': '❓ How to install?',
         'faq_q4': '❓ Will my account get banned?', 'faq_q5': '❓ Contact Yakuza',
@@ -139,10 +186,19 @@ T = {
         'gift_invalid': '❌ Invalid code!', 'random_title': '🎮 A random game was picked for you!', 'random_retry': '🔄 Another Game',
         'random_dl': '📱 Download', 'lang_changed': '✅ Language changed!',
         'points_title': '🪙 Your Points', 'points_have': '💰 Points you have', 'points_earn': '📈 How to earn points?',
-        'points_info': '🪙 How to earn points?\n\n✅ Ways:\n🔑 Gift code: 50-100 points\n🎁 Daily gift: 10-30 points\n⭐ Invite friend: 25 points per friend',
-        'ref_title': '⭐ Invite Friend', 'ref_desc': 'Send your special link to your friends!\n\nFor every friend who joins via your link, you get 25 points! 🎉',
-        'ref_link': '🔗 Your Link', 'ref_count': '👥 Invite Count', 'ref_share': '📤 Share',
-        'new_ref': '🎉 A friend joined via your link! +25 points 🪙'
+        'points_info': '🪙 How to earn points?\n\n✅ Ways:\n🔑 Gift code: 50-100 points\n🎁 Daily gift: 10-30 points\n⭐ Invite friend: 25 points\n🎲 Quiz: 15 points\n🎯 Guess number: 20 points',
+        'ref_title': '⭐ Invite Friend', 'ref_desc': 'Send your special link to your friends!\n\nFor every friend, you get 25 points! 🎉',
+        'ref_link': '🔗 Your Link', 'ref_count': '👥 Invite Count',
+        'new_ref': '🎉 A friend joined via your link! +25 points 🪙',
+        'quiz_title': '🎲 Game Quiz', 'quiz_correct': '✅ Correct answer! +15 points 🎉', 'quiz_wrong': '❌ Wrong answer! Try again',
+        'guess_title': '🎯 Guess a number between 1 and 10!\n\nType the number:', 'guess_correct': '🎉 Correct! +20 points 🪙',
+        'guess_wrong': '❌ Wrong! Try again', 'guess_hint_up': '⬆️ Number is bigger',
+        'guess_hint_down': '⬇️ Number is smaller',
+        'vip_title': '💎 VIP Level', 'vip_bronze': '🥉 Bronze', 'vip_silver': '🥈 Silver', 'vip_gold': '🥇 Gold', 'vip_diamond': '💎 Diamond',
+        'vip_none': '⚪ Normal',
+        'vip_info': '💎 VIP Levels\n\n⚪ Normal: 0-99 points\n🥉 Bronze: 100-299 points\n🥈 Silver: 300-599 points\n🥇 Gold: 600-999 points\n💎 Diamond: 1000+ points\n\nYour level: ',
+        'broadcast_prompt': '📢 Type your message to send to all users:',
+        'broadcast_sent': '✅ Message sent to all users!'
     }
 }
 
@@ -151,6 +207,14 @@ def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
 def add_points(uid, pts): user_points[uid] = user_points.get(uid, 0) + pts
 def get_points(uid): return user_points.get(uid, 0)
+
+def get_vip_level(uid, lang='ku'):
+    pts = get_points(uid)
+    if pts >= 1000: return T[lang]['vip_diamond']
+    elif pts >= 600: return T[lang]['vip_gold']
+    elif pts >= 300: return T[lang]['vip_silver']
+    elif pts >= 100: return T[lang]['vip_bronze']
+    else: return T[lang]['vip_none']
 
 def is_subscribed(uid):
     try:
@@ -179,8 +243,11 @@ def main_menu(uid):
           InlineKeyboardButton(t(uid,'btn_stats'), callback_data="my_stats"))
     m.add(InlineKeyboardButton(t(uid,'btn_points'), callback_data="my_points"),
           InlineKeyboardButton(t(uid,'btn_ref'), callback_data="invite_friend"))
-    m.add(InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"),
-          InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
+    m.add(InlineKeyboardButton(t(uid,'btn_quiz'), callback_data="quiz_start"),
+          InlineKeyboardButton(t(uid,'btn_guess'), callback_data="guess_start"))
+    m.add(InlineKeyboardButton(t(uid,'btn_vip'), callback_data="vip_info"),
+          InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"))
+    m.add(InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
     m.add(InlineKeyboardButton(t(uid,'btn_channel'), url="https://t.me/YAKUZA_CEO3"))
     return m
 
@@ -200,15 +267,16 @@ def start(message):
     uid = message.from_user.id
     name = message.from_user.first_name or "👋"
     add_stat(uid)
+    is_first = uid not in user_first_time
+    if is_first:
+        user_first_time[uid] = True
 
-    # ── چێک بۆ ڕیفێرال ──
     args = message.text.split()
     if len(args) > 1 and args[1].startswith('ref'):
         try:
             ref_id = int(args[1].replace('ref', ''))
             if ref_id != uid and uid not in user_referrals.get(ref_id, []):
-                if ref_id not in user_referrals:
-                    user_referrals[ref_id] = []
+                if ref_id not in user_referrals: user_referrals[ref_id] = []
                 user_referrals[ref_id].append(uid)
                 add_points(ref_id, 25)
                 try:
@@ -220,18 +288,56 @@ def start(message):
     if get_lang(uid) is None:
         bot.send_message(message.chat.id, f"سڵاو {name} 👋\n\n" + T['ku']['select_lang'] + "\n" + T['ar']['select_lang'] + "\n" + T['en']['select_lang'], reply_markup=lang_select_markup())
     elif is_subscribed(uid):
-        bot.send_message(message.chat.id, f"{t(uid,'welcome')} {name} 🔥\n{t(uid,'bot_name')}", reply_markup=main_menu(uid))
+        welcome_extra = f"\n\n{t(uid,'first_welcome')}" if is_first else ""
+        bot.send_message(message.chat.id, f"{t(uid,'welcome')} {name} 🔥\n{t(uid,'bot_name')}{welcome_extra}", reply_markup=main_menu(uid))
     else:
         bot.send_message(message.chat.id, f"سڵاو {name} 👋\n\n{t(uid,'join_msg')}", reply_markup=check_sub_markup(uid))
+
+@bot.message_handler(commands=['broadcast'])
+def broadcast_cmd(message):
+    if message.from_user.id == ADMIN_ID:
+        awaiting_broadcast[message.from_user.id] = True
+        bot.send_message(message.chat.id, t(message.from_user.id,'broadcast_prompt'))
 
 @bot.message_handler(func=lambda m: True)
 def handle_text(message):
     uid = message.from_user.id
-    text = message.text.strip().upper()
-    if text in gift_codes:
+    text = message.text.strip()
+
+    # ── Broadcast ──
+    if uid == ADMIN_ID and awaiting_broadcast.get(uid):
+        awaiting_broadcast[uid] = False
+        sent = 0
+        for u in list(user_langs.keys()):
+            try:
+                bot.send_message(u, text)
+                sent += 1
+            except: pass
+        bot.send_message(message.chat.id, f"{t(uid,'broadcast_sent')} ({sent})")
+        return
+
+    # ── دۆزینەوەی ژمارە ──
+    if uid in guess_number:
+        try:
+            guess = int(text)
+            target = guess_number[uid]
+            if guess == target:
+                add_points(uid, 20)
+                del guess_number[uid]
+                bot.send_message(message.chat.id, t(uid,'guess_correct'))
+            elif guess < target:
+                bot.send_message(message.chat.id, t(uid,'guess_hint_up'))
+            else:
+                bot.send_message(message.chat.id, t(uid,'guess_hint_down'))
+        except:
+            pass
+        return
+
+    text_upper = text.upper()
+    if text_upper in gift_codes:
         lang = get_lang(uid) or 'ku'
-        add_points(uid, code_points.get(text, 0))
-        bot.send_message(message.chat.id, gift_codes[text][lang])
+        add_points(uid, code_points.get(text_upper, 0))
+        bot.send_message(message.chat.id, gift_codes[text_upper][lang])
     else:
         add_stat(uid)
 
@@ -266,6 +372,37 @@ def cb(call):
 
         elif call.data == "get_latest_hack":
             bot.answer_callback_query(call.id, t(uid,'latest_hack'), show_alert=True)
+
+        # ── کوویز ──
+        elif call.data == "quiz_start":
+            lang = get_lang(uid) or 'ku'
+            q = random.choice(quiz_questions[lang])
+            mm = InlineKeyboardMarkup()
+            for i, opt in enumerate(q['opts']):
+                mm.add(InlineKeyboardButton(opt, callback_data=f"quiz_ans_{i}_{q['correct']}"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(f"{t(uid,'quiz_title')}\n\n❓ {q['q']}", cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("quiz_ans_"):
+            parts = call.data.split("_")
+            chosen, correct = int(parts[2]), int(parts[3])
+            if chosen == correct:
+                add_points(uid, 15)
+                bot.answer_callback_query(call.id, t(uid,'quiz_correct'), show_alert=True)
+            else:
+                bot.answer_callback_query(call.id, t(uid,'quiz_wrong'), show_alert=True)
+            bot.edit_message_text(f"{t(uid,'welcome')} {name} 🔥\n{t(uid,'bot_name')}", cid, mid, reply_markup=main_menu(uid))
+
+        # ── دۆزینەوەی ژمارە ──
+        elif call.data == "guess_start":
+            guess_number[uid] = random.randint(1, 10)
+            bot.edit_message_text(t(uid,'guess_title'), cid, mid, reply_markup=back_btn(uid))
+
+        # ── VIP ──
+        elif call.data == "vip_info":
+            lang = get_lang(uid) or 'ku'
+            level = get_vip_level(uid, lang)
+            bot.edit_message_text(f"{t(uid,'vip_info')}{level}", cid, mid, reply_markup=back_btn(uid))
 
         # ── خاڵەکانم ──
         elif call.data == "my_points":
@@ -302,7 +439,8 @@ def cb(call):
             count = user_stats.get(uid, 0)
             lang = get_lang(uid) or 'ku'
             lang_name = 'کوردی' if lang=='ku' else 'عربي' if lang=='ar' else 'English'
-            bot.edit_message_text(f"{t(uid,'stats_title')} {name}\n\n{t(uid,'stats_clicks')}: {count}\n{t(uid,'stats_lang')}: {lang_name}\n🪙 {t(uid,'points_have')}: {get_points(uid)}\n{t(uid,'stats_date')}: {datetime.now().strftime('%Y-%m-%d')}", cid, mid, reply_markup=back_btn(uid))
+            level = get_vip_level(uid, lang)
+            bot.edit_message_text(f"{t(uid,'stats_title')} {name}\n\n{t(uid,'stats_clicks')}: {count}\n{t(uid,'stats_lang')}: {lang_name}\n🪙 {t(uid,'points_have')}: {get_points(uid)}\n{level}\n{t(uid,'stats_date')}: {datetime.now().strftime('%Y-%m-%d')}", cid, mid, reply_markup=back_btn(uid))
 
         elif call.data == "leaderboard":
             sorted_u = sorted(user_stats.items(), key=lambda x: x[1], reverse=True)[:5]
