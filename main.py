@@ -271,6 +271,45 @@ EXTRA_T = {
 for lang in T:
     T[lang].update(EXTRA_T[lang])
 
+
+EXTRA_T2 = {
+    'ku': {
+        'btn_rps': '✊ کیش کیش کیش', 'btn_joke': '😂 نکتەیەک', 'btn_tip': '💡 تیپی ڕۆژانە', 'btn_countdown': '⏰ ژماردنی داهاتوو',
+        'rps_title': '✊✋✌️ کیش کیش کیش', 'rps_choose': 'یەکێک هەڵبژێرە:', 'rps_you': 'تۆ', 'rps_bot': 'من',
+        'rps_win': '🎉 بردت! +10 خاڵ', 'rps_lose': '❌ زۆرت! دووبارە هەوڵبدە', 'rps_draw': '🤝 یەکسانە!',
+        'joke_title': '😂 نکتەیەک بۆت', 'tip_title': '💡 تیپی ئەمڕۆ',
+        'countdown_title': '⏰ ژماردنەوە بۆ ئەپی داهاتوو', 'countdown_text': 'ئەپی نوێ بەم زووانە!'
+    },
+    'ar': {
+        'btn_rps': '✊ حجر ورقة مقص', 'btn_joke': '😂 نكتة', 'btn_tip': '💡 نصيحة اليوم', 'btn_countdown': '⏰ العد التنازلي',
+        'rps_title': '✊✋✌️ حجر ورقة مقص', 'rps_choose': 'اختر واحد:', 'rps_you': 'أنت', 'rps_bot': 'أنا',
+        'rps_win': '🎉 فزت! +10 نقطة', 'rps_lose': '❌ خسرت! حاول مرة أخرى', 'rps_draw': '🤝 تعادل!',
+        'joke_title': '😂 نكتة لك', 'tip_title': '💡 نصيحة اليوم',
+        'countdown_title': '⏰ العد التنازلي للتطبيق القادم', 'countdown_text': 'تطبيق جديد قريباً!'
+    },
+    'en': {
+        'btn_rps': '✊ Rock Paper Scissors', 'btn_joke': '😂 Joke', 'btn_tip': '💡 Daily Tip', 'btn_countdown': '⏰ Countdown',
+        'rps_title': '✊✋✌️ Rock Paper Scissors', 'rps_choose': 'Choose one:', 'rps_you': 'You', 'rps_bot': 'Me',
+        'rps_win': '🎉 You win! +10 points', 'rps_lose': '❌ You lose! Try again', 'rps_draw': '🤝 Draw!',
+        'joke_title': '😂 A joke for you', 'tip_title': '💡 Today\'s Tip',
+        'countdown_title': '⏰ Countdown to next app', 'countdown_text': 'New app coming soon!'
+    }
+}
+for lang in T:
+    T[lang].update(EXTRA_T2[lang])
+
+jokes = {
+    'ku': ["🎮 بۆچی گەیمەر هەرگیز نانخۆرێت؟ چونکە دەترسێت لێول up بکات! 😂", "💻 بۆچی کۆمپیوتەرەکە سارد بوو؟ چونکە پەنجەرەکانی کراوە بوون! 🪟", "🕹️ گەیمەرێک دەڵێت: من هەرگیز درۆ ناکەم، تەنها لاگ دەکەم! 😆"],
+    'ar': ["🎮 لماذا لا يأكل اللاعب أبداً؟ لأنه يخاف أن يرتفع مستواه! 😂", "💻 لماذا كان الكمبيوتر بارداً؟ لأن نوافذه كانت مفتوحة! 🪟", "🕹️ يقول أحد اللاعبين: أنا لا أكذب أبداً، أنا فقط أتأخر! 😆"],
+    'en': ["🎮 Why does a gamer never eat? Because they're afraid of leveling up! 😂", "💻 Why was the computer cold? Because it left its Windows open! 🪟", "🕹️ A gamer says: I never lie, I just lag! 😆"]
+}
+
+daily_tips = {
+    'ku': ["💡 هەمیشە فایلی بەکاپ بگرە پێش Install کردنی هەر ئەپێک!", "💡 VPN بەکاربهێنە بۆ ئەمنیەتی زیاتر!", "💡 هەرگیز پاسۆردی خۆت لەگەڵ کەس بەشدار مەکە!"],
+    'ar': ["💡 دائماً احفظ نسخة احتياطية قبل تثبيت أي تطبيق!", "💡 استخدم VPN لأمان أكثر!", "💡 لا تشارك كلمة مرورك مع أحد أبداً!"],
+    'en': ["💡 Always backup before installing any app!", "💡 Use VPN for extra security!", "💡 Never share your password with anyone!"]
+}
+
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
@@ -329,37 +368,73 @@ def lang_select_markup():
     m.add(InlineKeyboardButton("🇬🇧 English", callback_data="lang_en"))
     return m
 
+CAT_T = {
+    'ku': {'cat_hack': '🎮 هاک و یاری', 'cat_gift': '🎁 خاڵ و هەدیە', 'cat_fun': '🎲 گەیم و کاری', 'cat_settings': '⚙️ ڕێکخستن'},
+    'ar': {'cat_hack': '🎮 هاك وألعاب', 'cat_gift': '🎁 نقاط وهدايا', 'cat_fun': '🎲 ألعاب ونشاطات', 'cat_settings': '⚙️ إعدادات'},
+    'en': {'cat_hack': '🎮 Hacks & Games', 'cat_gift': '🎁 Points & Gifts', 'cat_fun': '🎲 Fun & Activities', 'cat_settings': '⚙️ Settings'}
+}
+for lang in T:
+    T[lang].update(CAT_T[lang])
+
 def main_menu(uid):
     m = InlineKeyboardMarkup(row_width=2)
-    m.add(InlineKeyboardButton(t(uid,'btn_hack'), callback_data="get_latest_hack"),
-          InlineKeyboardButton(t(uid,'btn_anti'), callback_data="anti_ban_info"))
-    m.add(InlineKeyboardButton(t(uid,'btn_world'), callback_data="hacker_world"),
-          InlineKeyboardButton(t(uid,'btn_lucky'), callback_data="lucky"))
-    m.add(InlineKeyboardButton(t(uid,'btn_faq'), callback_data="faq"),
-          InlineKeyboardButton(t(uid,'btn_game'), callback_data="random_game"))
-    m.add(InlineKeyboardButton(t(uid,'btn_lead'), callback_data="leaderboard"),
-          InlineKeyboardButton(t(uid,'btn_daily'), callback_data="daily_gift"))
-    m.add(InlineKeyboardButton(t(uid,'btn_code'), callback_data="gift_code"),
-          InlineKeyboardButton(t(uid,'btn_stats'), callback_data="my_stats"))
-    m.add(InlineKeyboardButton(t(uid,'btn_points'), callback_data="my_points"),
-          InlineKeyboardButton(t(uid,'btn_ref'), callback_data="invite_friend"))
-    m.add(InlineKeyboardButton(t(uid,'btn_quiz'), callback_data="quiz_start"),
-          InlineKeyboardButton(t(uid,'btn_guess'), callback_data="guess_start"))
-    m.add(InlineKeyboardButton(t(uid,'btn_vip'), callback_data="vip_info"),
-          InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"))
-    m.add(InlineKeyboardButton(t(uid,'btn_wheel'), callback_data="wheel_spin"),
-          InlineKeyboardButton(t(uid,'btn_dice'), callback_data="dice_roll"))
-    m.add(InlineKeyboardButton(t(uid,'btn_achieve'), callback_data="my_achievements"),
-          InlineKeyboardButton(t(uid,'btn_streak'), callback_data="my_streak"))
-    m.add(InlineKeyboardButton(t(uid,'btn_nickname'), callback_data="set_nickname"),
-          InlineKeyboardButton(t(uid,'btn_fav'), callback_data="my_favorites"))
-    m.add(InlineKeyboardButton(t(uid,'btn_gift_pts'), callback_data="gift_points"),
-          InlineKeyboardButton(t(uid,'btn_weekly'), callback_data="weekly_contest"))
-    m.add(InlineKeyboardButton(t(uid,'btn_report'), callback_data="report_issue"))
+    m.add(InlineKeyboardButton(t(uid,'cat_hack'), callback_data="cat_hack"),
+          InlineKeyboardButton(t(uid,'cat_gift'), callback_data="cat_gift"))
+    m.add(InlineKeyboardButton(t(uid,'cat_fun'), callback_data="cat_fun"),
+          InlineKeyboardButton(t(uid,'cat_settings'), callback_data="cat_settings"))
     m.add(InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
     m.add(InlineKeyboardButton(t(uid,'btn_channel'), url="https://t.me/YAKUZA_CEO3"))
     if uid == ADMIN_ID:
         m.add(InlineKeyboardButton(t(uid,'btn_admin'), callback_data="admin_panel"))
+    return m
+
+def cat_hack_menu(uid):
+    m = InlineKeyboardMarkup(row_width=2)
+    m.add(InlineKeyboardButton(t(uid,'btn_hack'), callback_data="get_latest_hack"),
+          InlineKeyboardButton(t(uid,'btn_anti'), callback_data="anti_ban_info"))
+    m.add(InlineKeyboardButton(t(uid,'btn_world'), callback_data="hacker_world"),
+          InlineKeyboardButton(t(uid,'btn_game'), callback_data="random_game"))
+    m.add(InlineKeyboardButton(t(uid,'btn_faq'), callback_data="faq"))
+    m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+    return m
+
+def cat_gift_menu(uid):
+    m = InlineKeyboardMarkup(row_width=2)
+    m.add(InlineKeyboardButton(t(uid,'btn_lucky'), callback_data="lucky"),
+          InlineKeyboardButton(t(uid,'btn_daily'), callback_data="daily_gift"))
+    m.add(InlineKeyboardButton(t(uid,'btn_code'), callback_data="gift_code"),
+          InlineKeyboardButton(t(uid,'btn_points'), callback_data="my_points"))
+    m.add(InlineKeyboardButton(t(uid,'btn_ref'), callback_data="invite_friend"),
+          InlineKeyboardButton(t(uid,'btn_gift_pts'), callback_data="gift_points"))
+    m.add(InlineKeyboardButton(t(uid,'btn_vip'), callback_data="vip_info"))
+    m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+    return m
+
+def cat_fun_menu(uid):
+    m = InlineKeyboardMarkup(row_width=2)
+    m.add(InlineKeyboardButton(t(uid,'btn_quiz'), callback_data="quiz_start"),
+          InlineKeyboardButton(t(uid,'btn_guess'), callback_data="guess_start"))
+    m.add(InlineKeyboardButton(t(uid,'btn_wheel'), callback_data="wheel_spin"),
+          InlineKeyboardButton(t(uid,'btn_dice'), callback_data="dice_roll"))
+    m.add(InlineKeyboardButton(t(uid,'btn_rps'), callback_data="rps_start"),
+          InlineKeyboardButton(t(uid,'btn_joke'), callback_data="tell_joke"))
+    m.add(InlineKeyboardButton(t(uid,'btn_tip'), callback_data="daily_tip"),
+          InlineKeyboardButton(t(uid,'btn_countdown'), callback_data="countdown"))
+    m.add(InlineKeyboardButton(t(uid,'btn_achieve'), callback_data="my_achievements"),
+          InlineKeyboardButton(t(uid,'btn_streak'), callback_data="my_streak"))
+    m.add(InlineKeyboardButton(t(uid,'btn_lead'), callback_data="leaderboard"),
+          InlineKeyboardButton(t(uid,'btn_weekly'), callback_data="weekly_contest"))
+    m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+    return m
+
+def cat_settings_menu(uid):
+    m = InlineKeyboardMarkup(row_width=2)
+    m.add(InlineKeyboardButton(t(uid,'btn_stats'), callback_data="my_stats"),
+          InlineKeyboardButton(t(uid,'btn_nickname'), callback_data="set_nickname"))
+    m.add(InlineKeyboardButton(t(uid,'btn_fav'), callback_data="my_favorites"),
+          InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"))
+    m.add(InlineKeyboardButton(t(uid,'btn_report'), callback_data="report_issue"))
+    m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
 
 def back_btn(uid, data="back_to_main"):
@@ -520,6 +595,59 @@ def cb(call):
 
         elif call.data == "get_latest_hack":
             bot.answer_callback_query(call.id, t(uid,'latest_hack'), show_alert=True)
+
+        elif call.data == "cat_hack":
+            bot.edit_message_text(t(uid,'cat_hack'), cid, mid, reply_markup=cat_hack_menu(uid))
+        elif call.data == "cat_gift":
+            bot.edit_message_text(t(uid,'cat_gift'), cid, mid, reply_markup=cat_gift_menu(uid))
+        elif call.data == "cat_fun":
+            bot.edit_message_text(t(uid,'cat_fun'), cid, mid, reply_markup=cat_fun_menu(uid))
+        elif call.data == "cat_settings":
+            bot.edit_message_text(t(uid,'cat_settings'), cid, mid, reply_markup=cat_settings_menu(uid))
+
+        # ── کیش کیش کیش ──
+        elif call.data == "rps_start":
+            mm = InlineKeyboardMarkup(row_width=3)
+            mm.add(InlineKeyboardButton("✊", callback_data="rps_rock"),
+                   InlineKeyboardButton("✋", callback_data="rps_paper"),
+                   InlineKeyboardButton("✌️", callback_data="rps_scissors"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(f"{t(uid,'rps_title')}\n\n{t(uid,'rps_choose')}", cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("rps_") and call.data != "rps_start":
+            choice = call.data.split("_")[1]
+            choices = ['rock', 'paper', 'scissors']
+            emojis = {'rock':'✊','paper':'✋','scissors':'✌️'}
+            bot_choice = random.choice(choices)
+            if choice == bot_choice:
+                result = t(uid,'rps_draw')
+            elif (choice=='rock' and bot_choice=='scissors') or (choice=='paper' and bot_choice=='rock') or (choice=='scissors' and bot_choice=='paper'):
+                add_points(uid, 10)
+                result = t(uid,'rps_win')
+            else:
+                result = t(uid,'rps_lose')
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'btn_rps'), callback_data="rps_start"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(f"{t(uid,'rps_you')}: {emojis[choice]}\n{t(uid,'rps_bot')}: {emojis[bot_choice]}\n\n{result}", cid, mid, reply_markup=mm)
+
+        # ── نکتە ──
+        elif call.data == "tell_joke":
+            lang = get_lang(uid) or 'ku'
+            joke = random.choice(jokes[lang])
+            bot.edit_message_text(f"{t(uid,'joke_title')}\n\n{joke}", cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+
+        # ── تیپی ڕۆژانە ──
+        elif call.data == "daily_tip":
+            lang = get_lang(uid) or 'ku'
+            tip = random.choice(daily_tips[lang])
+            bot.edit_message_text(f"{t(uid,'tip_title')}\n\n{tip}", cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+
+        # ── ژماردنەوە ──
+        elif call.data == "countdown":
+            bot.edit_message_text(f"{t(uid,'countdown_title')}\n\n{t(uid,'countdown_text')}", cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+
+
 
         # ── کوویز ──
         elif call.data == "quiz_start":
