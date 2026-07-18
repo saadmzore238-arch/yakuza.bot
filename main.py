@@ -24,6 +24,11 @@ user_nickname = {}
 user_favorites = {}
 user_blocked = set()
 weekly_points = {}
+tictactoe_games = {}
+memory_games = {}
+speed_click_data = {}
+qr_requested = {}
+
 
 
 gift_codes = {
@@ -310,6 +315,84 @@ daily_tips = {
     'en': ["💡 Always backup before installing any app!", "💡 Use VPN for extra security!", "💡 Never share your password with anyone!"]
 }
 
+
+EXTRA_T3 = {
+    'ku': {
+        'btn_ttt': '⭕ Tic Tac Toe', 'btn_memory': '🃏 یاریی مێمۆری', 'btn_speed': '⚡ کلیکی خێرا',
+        'btn_rank': '🏆 پلەی من', 'btn_shop': '🛒 فرۆشگای خاڵ', 'btn_history': '📜 مێژووم',
+        'btn_challenge': '👫 پێشبڕکێی هاوڕێ', 'btn_qr': '📱 QR کۆد', 'btn_tutorial': '📖 فێرکاری',
+        'ttt_title': '⭕ Tic Tac Toe - نۆرەی تۆیە', 'ttt_win': '🎉 تۆ بردت! +30 خاڵ', 'ttt_lose': '❌ بۆت بردی!', 'ttt_draw': '🤝 یەکسانە!',
+        'memory_title': '🃏 یاریی مێمۆری\n\nهەردوو کارتی هاوشێوە هەڵبژێرە!', 'memory_match': '✅ هاوتایە! +15 خاڵ', 'memory_nomatch': '❌ هاوتا نییە!',
+        'speed_title': '⚡ کلیکی خێرا\n\nلە ماوەی 5 چرکەدا زۆرترین کلیک بکە!', 'speed_click': '👆 کلیک!', 'speed_result': '⚡ ئەنجام:', 'speed_clicks': 'کلیک',
+        'rank_bronze': '🥉 بڕۆنز', 'rank_silver': '🥈 زیو', 'rank_gold': '🥇 زێڕ', 'rank_platinum': '💠 پلاتینیۆم', 'rank_diamond': '💎 داماند', 'rank_legend': '👑 ئەفسانە',
+        'rank_title': '🏆 پلەی تۆ', 'rank_progress': 'پێشکەوتن بۆ پلەی داهاتوو',
+        'shop_title': '🛒 فرۆشگای خاڵ', 'shop_item1': '🎨 تیمی ڕەنگی تایبەت - 200 خاڵ', 'shop_item2': '👑 باجی VIP مانگ - 500 خاڵ', 'shop_item3': '🎁 هەدیەی نهێنی - 1000 خاڵ',
+        'shop_buy': '🛒 کڕین', 'shop_bought': '✅ کڕدرا!', 'shop_no_points': '❌ خاڵت پێویست نییە!',
+        'history_title': '📜 مێژووی چالاکیەکانت', 'history_empty': 'هیچ چالاکیەک تۆمار نەکراوە',
+        'challenge_prompt': '👫 ID ی هاوڕێکەت بنووسە بۆ پێشبڕکێ:', 'challenge_sent': '✅ داواکاری پێشبڕکێ نێردرا!',
+        'challenge_received': '👫 هاوڕێیەک داوای پێشبڕکێی لێکردی!',
+        'qr_title': '📱 QR کۆدی لینکی بانگهێشتت', 'qr_desc': 'ئەم لینکە بنێرە بۆ هاوڕێکانت:',
+        'tutorial_title': '📖 فێرکاری بۆتەکە', 'tutorial_text': '👋 بەخێربێیت بۆ یاکوزا ستۆر بۆت!\n\n1️⃣ لە بەشی 🎮 هاک و یاری، هاکەکان ببینە\n2️⃣ لە بەشی 🎁 خاڵ و هەدیە، خاڵ کۆبکەرەوە\n3️⃣ لە بەشی 🎲 گەیم و کاری، یاری بکە و ڕابواردنە\n4️⃣ لە بەشی ⚙️ ڕێکخستن، هەموو شتێک کۆنترۆڵ بکە\n\nسەرکەوتوو بیت! 🎉'
+    },
+    'ar': {
+        'btn_ttt': '⭕ إكس أو', 'btn_memory': '🃏 لعبة الذاكرة', 'btn_speed': '⚡ نقر سريع',
+        'btn_rank': '🏆 رتبتي', 'btn_shop': '🛒 متجر النقاط', 'btn_history': '📜 سجلي',
+        'btn_challenge': '👫 تحدي صديق', 'btn_qr': '📱 رمز QR', 'btn_tutorial': '📖 دليل الاستخدام',
+        'ttt_title': '⭕ إكس أو - دورك', 'ttt_win': '🎉 فزت! +30 نقطة', 'ttt_lose': '❌ فاز البوت!', 'ttt_draw': '🤝 تعادل!',
+        'memory_title': '🃏 لعبة الذاكرة\n\nاختر بطاقتين متشابهتين!', 'memory_match': '✅ متطابقتان! +15 نقطة', 'memory_nomatch': '❌ غير متطابقتان!',
+        'speed_title': '⚡ نقر سريع\n\nانقر أكبر عدد ممكن خلال 5 ثواني!', 'speed_click': '👆 انقر!', 'speed_result': '⚡ النتيجة:', 'speed_clicks': 'نقرة',
+        'rank_bronze': '🥉 برونزي', 'rank_silver': '🥈 فضي', 'rank_gold': '🥇 ذهبي', 'rank_platinum': '💠 بلاتيني', 'rank_diamond': '💎 ماسي', 'rank_legend': '👑 أسطورة',
+        'rank_title': '🏆 رتبتك', 'rank_progress': 'التقدم للرتبة القادمة',
+        'shop_title': '🛒 متجر النقاط', 'shop_item1': '🎨 تيم ألوان خاص - 200 نقطة', 'shop_item2': '👑 شارة VIP شهر - 500 نقطة', 'shop_item3': '🎁 هدية سرية - 1000 نقطة',
+        'shop_buy': '🛒 شراء', 'shop_bought': '✅ تم الشراء!', 'shop_no_points': '❌ نقاطك غير كافية!',
+        'history_title': '📜 سجل نشاطاتك', 'history_empty': 'لا يوجد نشاط مسجل',
+        'challenge_prompt': '👫 اكتب ID صديقك للتحدي:', 'challenge_sent': '✅ تم إرسال طلب التحدي!',
+        'challenge_received': '👫 صديق طلب تحديك!',
+        'qr_title': '📱 رمز QR لرابط دعوتك', 'qr_desc': 'أرسل هذا الرابط لأصدقائك:',
+        'tutorial_title': '📖 دليل استخدام البوت', 'tutorial_text': '👋 مرحباً بك في بوت ياكوزا ستور!\n\n1️⃣ من قسم 🎮 هاك وألعاب، شاهد الهاكات\n2️⃣ من قسم 🎁 نقاط وهدايا، اجمع النقاط\n3️⃣ من قسم 🎲 ألعاب ونشاطات، العب واستمتع\n4️⃣ من قسم ⚙️ إعدادات، تحكم بكل شيء\n\nبالتوفيق! 🎉'
+    },
+    'en': {
+        'btn_ttt': '⭕ Tic Tac Toe', 'btn_memory': '🃏 Memory Game', 'btn_speed': '⚡ Speed Click',
+        'btn_rank': '🏆 My Rank', 'btn_shop': '🛒 Points Shop', 'btn_history': '📜 My History',
+        'btn_challenge': '👫 Challenge Friend', 'btn_qr': '📱 QR Code', 'btn_tutorial': '📖 Tutorial',
+        'ttt_title': '⭕ Tic Tac Toe - Your turn', 'ttt_win': '🎉 You won! +30 points', 'ttt_lose': '❌ Bot won!', 'ttt_draw': '🤝 Draw!',
+        'memory_title': '🃏 Memory Game\n\nPick two matching cards!', 'memory_match': '✅ Match! +15 points', 'memory_nomatch': '❌ No match!',
+        'speed_title': '⚡ Speed Click\n\nClick as much as possible in 5 seconds!', 'speed_click': '👆 Click!', 'speed_result': '⚡ Result:', 'speed_clicks': 'clicks',
+        'rank_bronze': '🥉 Bronze', 'rank_silver': '🥈 Silver', 'rank_gold': '🥇 Gold', 'rank_platinum': '💠 Platinum', 'rank_diamond': '💎 Diamond', 'rank_legend': '👑 Legend',
+        'rank_title': '🏆 Your Rank', 'rank_progress': 'Progress to next rank',
+        'shop_title': '🛒 Points Shop', 'shop_item1': '🎨 Custom Color Theme - 200 points', 'shop_item2': '👑 VIP Badge Month - 500 points', 'shop_item3': '🎁 Secret Gift - 1000 points',
+        'shop_buy': '🛒 Buy', 'shop_bought': '✅ Purchased!', 'shop_no_points': '❌ Not enough points!',
+        'history_title': '📜 Your Activity History', 'history_empty': 'No activity recorded',
+        'challenge_prompt': '👫 Type your friend\'s ID to challenge:', 'challenge_sent': '✅ Challenge request sent!',
+        'challenge_received': '👫 A friend challenged you!',
+        'qr_title': '📱 QR Code for your invite link', 'qr_desc': 'Send this link to your friends:',
+        'tutorial_title': '📖 Bot Tutorial', 'tutorial_text': '👋 Welcome to Yakuza Store Bot!\n\n1️⃣ In 🎮 Hacks & Games section, view hacks\n2️⃣ In 🎁 Points & Gifts section, collect points\n3️⃣ In 🎲 Fun & Activities section, play and enjoy\n4️⃣ In ⚙️ Settings section, control everything\n\nGood luck! 🎉'
+    }
+}
+for lang in T:
+    T[lang].update(EXTRA_T3[lang])
+
+def get_rank(uid, lang='ku'):
+    pts = get_points(uid)
+    if pts >= 2000: return T[lang]['rank_legend']
+    elif pts >= 1000: return T[lang]['rank_diamond']
+    elif pts >= 600: return T[lang]['rank_platinum']
+    elif pts >= 300: return T[lang]['rank_gold']
+    elif pts >= 100: return T[lang]['rank_silver']
+    else: return T[lang]['rank_bronze']
+
+def check_ttt_winner(board):
+    wins = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
+    for a,b,c in wins:
+        if board[a] and board[a]==board[b]==board[c]:
+            return board[a]
+    if all(board): return 'draw'
+    return None
+
+def ttt_bot_move(board):
+    empty = [i for i,v in enumerate(board) if not v]
+    return random.choice(empty) if empty else None
+
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
@@ -406,7 +489,8 @@ def cat_gift_menu(uid):
           InlineKeyboardButton(t(uid,'btn_points'), callback_data="my_points"))
     m.add(InlineKeyboardButton(t(uid,'btn_ref'), callback_data="invite_friend"),
           InlineKeyboardButton(t(uid,'btn_gift_pts'), callback_data="gift_points"))
-    m.add(InlineKeyboardButton(t(uid,'btn_vip'), callback_data="vip_info"))
+    m.add(InlineKeyboardButton(t(uid,'btn_vip'), callback_data="vip_info"),
+          InlineKeyboardButton(t(uid,'btn_shop'), callback_data="points_shop"))
     m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
 
@@ -420,10 +504,15 @@ def cat_fun_menu(uid):
           InlineKeyboardButton(t(uid,'btn_joke'), callback_data="tell_joke"))
     m.add(InlineKeyboardButton(t(uid,'btn_tip'), callback_data="daily_tip"),
           InlineKeyboardButton(t(uid,'btn_countdown'), callback_data="countdown"))
+    m.add(InlineKeyboardButton(t(uid,'btn_ttt'), callback_data="ttt_start"),
+          InlineKeyboardButton(t(uid,'btn_memory'), callback_data="memory_start"))
+    m.add(InlineKeyboardButton(t(uid,'btn_speed'), callback_data="speed_start"),
+          InlineKeyboardButton(t(uid,'btn_challenge'), callback_data="challenge_start"))
     m.add(InlineKeyboardButton(t(uid,'btn_achieve'), callback_data="my_achievements"),
           InlineKeyboardButton(t(uid,'btn_streak'), callback_data="my_streak"))
     m.add(InlineKeyboardButton(t(uid,'btn_lead'), callback_data="leaderboard"),
           InlineKeyboardButton(t(uid,'btn_weekly'), callback_data="weekly_contest"))
+    m.add(InlineKeyboardButton(t(uid,'btn_rank'), callback_data="my_rank"))
     m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
 
@@ -433,7 +522,10 @@ def cat_settings_menu(uid):
           InlineKeyboardButton(t(uid,'btn_nickname'), callback_data="set_nickname"))
     m.add(InlineKeyboardButton(t(uid,'btn_fav'), callback_data="my_favorites"),
           InlineKeyboardButton(t(uid,'btn_lang'), callback_data="change_lang"))
-    m.add(InlineKeyboardButton(t(uid,'btn_report'), callback_data="report_issue"))
+    m.add(InlineKeyboardButton(t(uid,'btn_history'), callback_data="my_history"),
+          InlineKeyboardButton(t(uid,'btn_qr'), callback_data="my_qr"))
+    m.add(InlineKeyboardButton(t(uid,'btn_tutorial'), callback_data="tutorial"),
+          InlineKeyboardButton(t(uid,'btn_report'), callback_data="report_issue"))
     m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
 
@@ -490,6 +582,20 @@ def broadcast_cmd(message):
 def handle_text(message):
     uid = message.from_user.id
     text = message.text.strip()
+
+    # ── چالینج ──
+    if awaiting_broadcast.get(f"challenge_{uid}"):
+        awaiting_broadcast[f"challenge_{uid}"] = False
+        try:
+            target_id = int(text)
+            bot.send_message(message.chat.id, t(uid,'challenge_sent'))
+            try:
+                target_lang = get_lang(target_id) or 'ku'
+                bot.send_message(target_id, T[target_lang]['challenge_received'])
+            except: pass
+        except:
+            bot.send_message(message.chat.id, "❌")
+        return
 
     # ── نازناو ──
     if awaiting_broadcast.get(f"nick_{uid}"):
@@ -646,6 +752,154 @@ def cb(call):
         # ── ژماردنەوە ──
         elif call.data == "countdown":
             bot.edit_message_text(f"{t(uid,'countdown_title')}\n\n{t(uid,'countdown_text')}", cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+
+        # ── Tic Tac Toe ──
+        elif call.data == "ttt_start":
+            tictactoe_games[uid] = [None]*9
+            board = tictactoe_games[uid]
+            mm = InlineKeyboardMarkup(row_width=3)
+            for i in range(9):
+                mm.add(InlineKeyboardButton(board[i] or "⬜", callback_data=f"ttt_{i}"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(t(uid,'ttt_title'), cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("ttt_") and call.data != "ttt_start":
+            idx = int(call.data.split("_")[1])
+            board = tictactoe_games.get(uid, [None]*9)
+            if board[idx] is None:
+                board[idx] = 'X'
+                winner = check_ttt_winner(board)
+                if not winner:
+                    bot_idx = ttt_bot_move(board)
+                    if bot_idx is not None:
+                        board[bot_idx] = 'O'
+                        winner = check_ttt_winner(board)
+                tictactoe_games[uid] = board
+                mm = InlineKeyboardMarkup(row_width=3)
+                for i in range(9):
+                    mm.add(InlineKeyboardButton(board[i] or "⬜", callback_data=f"ttt_{i}"))
+                mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+                if winner == 'X':
+                    add_points(uid, 30)
+                    bot.edit_message_text(t(uid,'ttt_win'), cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+                elif winner == 'O':
+                    bot.edit_message_text(t(uid,'ttt_lose'), cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+                elif winner == 'draw':
+                    bot.edit_message_text(t(uid,'ttt_draw'), cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+                else:
+                    bot.edit_message_text(t(uid,'ttt_title'), cid, mid, reply_markup=mm)
+
+        # ── یاریی مێمۆری ──
+        elif call.data == "memory_start":
+            emojis = ["🍎","🍎","🍌","🍌","🍇","🍇","🍒","🍒"]
+            random.shuffle(emojis)
+            memory_games[uid] = {'board': emojis, 'revealed': [False]*8, 'first': None}
+            mm = InlineKeyboardMarkup(row_width=4)
+            for i in range(8):
+                mm.add(InlineKeyboardButton("❓", callback_data=f"mem_{i}"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(t(uid,'memory_title'), cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("mem_"):
+            idx = int(call.data.split("_")[1])
+            game = memory_games.get(uid)
+            if game and not game['revealed'][idx]:
+                if game['first'] is None:
+                    game['first'] = idx
+                    game['revealed'][idx] = True
+                else:
+                    first = game['first']
+                    if game['board'][first] == game['board'][idx] and first != idx:
+                        game['revealed'][idx] = True
+                        add_points(uid, 15)
+                        bot.answer_callback_query(call.id, t(uid,'memory_match'))
+                    else:
+                        bot.answer_callback_query(call.id, t(uid,'memory_nomatch'))
+                        game['revealed'][first] = False
+                    game['first'] = None
+                mm = InlineKeyboardMarkup(row_width=4)
+                for i in range(8):
+                    label = game['board'][i] if game['revealed'][i] else "❓"
+                    mm.add(InlineKeyboardButton(label, callback_data=f"mem_{i}"))
+                mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+                bot.edit_message_text(t(uid,'memory_title'), cid, mid, reply_markup=mm)
+
+        # ── کلیکی خێرا ──
+        elif call.data == "speed_start":
+            import time
+            speed_click_data[uid] = {'count': 0, 'start': time.time()}
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'speed_click'), callback_data="speed_click"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(t(uid,'speed_title'), cid, mid, reply_markup=mm)
+
+        elif call.data == "speed_click":
+            import time
+            data = speed_click_data.get(uid)
+            if data:
+                elapsed = time.time() - data['start']
+                if elapsed <= 5:
+                    data['count'] += 1
+                    bot.answer_callback_query(call.id, f"👆 {data['count']}")
+                else:
+                    pts = data['count'] * 2
+                    add_points(uid, pts)
+                    mm = InlineKeyboardMarkup()
+                    mm.add(InlineKeyboardButton(t(uid,'btn_speed'), callback_data="speed_start"))
+                    mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+                    bot.edit_message_text(f"{t(uid,'speed_result')} {data['count']} {t(uid,'speed_clicks')} = +{pts} 🪙", cid, mid, reply_markup=mm)
+                    del speed_click_data[uid]
+
+        # ── پلەی من ──
+        elif call.data == "my_rank":
+            lang = get_lang(uid) or 'ku'
+            rank = get_rank(uid, lang)
+            pts = get_points(uid)
+            bot.edit_message_text(f"{t(uid,'rank_title')}\n\n{rank}\n\n🪙 {pts}", cid, mid, reply_markup=back_btn(uid,"cat_fun"))
+
+        # ── فرۆشگای خاڵ ──
+        elif call.data == "points_shop":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'shop_item1'), callback_data="buy_item1"))
+            mm.add(InlineKeyboardButton(t(uid,'shop_item2'), callback_data="buy_item2"))
+            mm.add(InlineKeyboardButton(t(uid,'shop_item3'), callback_data="buy_item3"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_gift"))
+            bot.edit_message_text(t(uid,'shop_title'), cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("buy_item"):
+            costs = {'buy_item1': 200, 'buy_item2': 500, 'buy_item3': 1000}
+            cost = costs.get(call.data, 0)
+            if get_points(uid) >= cost:
+                user_points[uid] -= cost
+                bot.answer_callback_query(call.id, t(uid,'shop_bought'), show_alert=True)
+            else:
+                bot.answer_callback_query(call.id, t(uid,'shop_no_points'), show_alert=True)
+
+        # ── مێژووم ──
+        elif call.data == "my_history":
+            clicks = user_stats.get(uid, 0)
+            pts = get_points(uid)
+            streak = user_streak.get(uid, 0)
+            text = f"{t(uid,'history_title')}\n\n🔢 {clicks} کلیک\n🪙 {pts} خاڵ\n🔥 {streak} ڕۆژ بەردەوام"
+            bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid))
+
+        # ── چالینج ──
+        elif call.data == "challenge_start":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            awaiting_broadcast[f"challenge_{uid}"] = True
+            bot.edit_message_text(t(uid,'challenge_prompt'), cid, mid, reply_markup=mm)
+
+        # ── QR ──
+        elif call.data == "my_qr":
+            bot_username = bot.get_me().username
+            link = f"https://t.me/{bot_username}?start=ref{uid}"
+            bot.edit_message_text(f"{t(uid,'qr_title')}\n\n{t(uid,'qr_desc')}\n{link}", cid, mid, reply_markup=back_btn(uid))
+
+        # ── فێرکاری ──
+        elif call.data == "tutorial":
+            bot.edit_message_text(t(uid,'tutorial_text'), cid, mid, reply_markup=back_btn(uid))
+
 
 
 
