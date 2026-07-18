@@ -28,6 +28,12 @@ tictactoe_games = {}
 memory_games = {}
 speed_click_data = {}
 qr_requested = {}
+user_characters = {}
+user_clans = {}
+clan_members = {}
+trade_offers = {}
+treasure_map = {}
+
 
 
 
@@ -393,6 +399,60 @@ def ttt_bot_move(board):
     empty = [i for i,v in enumerate(board) if not v]
     return random.choice(empty) if empty else None
 
+
+RPG_T = {
+    'ku': {
+        'btn_universe': '🎪 دنیای یاکوزا', 'universe_title': '🎪 دنیای یاکوزا',
+        'btn_create_char': '🎭 کاراکتەرم دروست بکە', 'btn_my_char': '👤 کاراکتەرەکەم', 'btn_battle': '⚔️ شەڕ لەگەڵ دوژمن',
+        'btn_clan': '🏰 باڵکۆنی من', 'btn_trade': '💰 بازرگانی', 'btn_treasure': '🗺️ دۆزینەوەی گەنجینە',
+        'char_choose_class': '🎭 پیشەیەک هەڵبژێرە:', 'class_hacker': '💻 هاکەر', 'class_gamer': '🎮 گەیمەر', 'class_warrior': '⚔️ جەنگاوەر',
+        'char_created': '🎉 کاراکتەرەکەت دروست بوو!', 'char_level': '📈 ئاست', 'char_hp': '❤️ تەندروستی', 'char_class': '🎭 پیشە',
+        'char_exists': '⚠️ کاراکتەرێکت هەیە پێشتر!', 'char_none': '❌ هێشتا کاراکتەرت نییە! دروستی بکە',
+        'battle_title': '⚔️ شەڕ لەگەڵ دوژمن', 'battle_enemy': '👹 دوژمن دۆزرایەوە!', 'battle_win': '🎉 بردتیانەوە! +30 خاڵ و +1 ئاست',
+        'battle_lose': '💀 شکستت خوارد! دووبارە هەوڵبدە', 'battle_attack': '⚔️ هێرش!',
+        'clan_title': '🏰 باڵکۆنەکان', 'clan_create': '🏗️ باڵکۆنێک دروست بکە', 'clan_join': '➕ چوونە باڵکۆنێک', 'clan_my': '👥 باڵکۆنەکەم',
+        'clan_create_prompt': '🏰 ناوی باڵکۆنەکەت بنووسە:', 'clan_created': '🎉 باڵکۆنەکەت دروست بوو!',
+        'clan_none': '❌ هێشتا لە هیچ باڵکۆنێک نیت!', 'clan_members': '👥 ئەندامان',
+        'trade_title': '💰 بازرگانی خاڵ', 'trade_prompt': '💰 ID ی کەسەکە و ژمارەی خاڵ بنووسە بۆ بازرگانی\n\nنموونە: 123456 50',
+        'treasure_title': '🗺️ گەشتی گەنجینە', 'treasure_search': '🔍 بگەڕێ', 'treasure_found': '💎 گەنجینەیەکت دۆزیەوە! +',
+        'treasure_empty': '😢 هیچ نەدۆزرایەوە، دووبارە هەوڵبدە!'
+    },
+    'ar': {
+        'btn_universe': '🎪 عالم ياكوزا', 'universe_title': '🎪 عالم ياكوزا',
+        'btn_create_char': '🎭 أنشئ شخصيتي', 'btn_my_char': '👤 شخصيتي', 'btn_battle': '⚔️ قاتل عدو',
+        'btn_clan': '🏰 عشيرتي', 'btn_trade': '💰 تجارة', 'btn_treasure': '🗺️ ابحث عن كنز',
+        'char_choose_class': '🎭 اختر مهنة:', 'class_hacker': '💻 هاكر', 'class_gamer': '🎮 لاعب', 'class_warrior': '⚔️ محارب',
+        'char_created': '🎉 تم إنشاء شخصيتك!', 'char_level': '📈 المستوى', 'char_hp': '❤️ الصحة', 'char_class': '🎭 المهنة',
+        'char_exists': '⚠️ لديك شخصية بالفعل!', 'char_none': '❌ ليس لديك شخصية بعد! أنشئها',
+        'battle_title': '⚔️ قتال عدو', 'battle_enemy': '👹 تم العثور على عدو!', 'battle_win': '🎉 فزت! +30 نقطة و+1 مستوى',
+        'battle_lose': '💀 خسرت! حاول مرة أخرى', 'battle_attack': '⚔️ هجوم!',
+        'clan_title': '🏰 العشائر', 'clan_create': '🏗️ أنشئ عشيرة', 'clan_join': '➕ انضم لعشيرة', 'clan_my': '👥 عشيرتي',
+        'clan_create_prompt': '🏰 اكتب اسم عشيرتك:', 'clan_created': '🎉 تم إنشاء عشيرتك!',
+        'clan_none': '❌ لست في أي عشيرة بعد!', 'clan_members': '👥 الأعضاء',
+        'trade_title': '💰 تجارة النقاط', 'trade_prompt': '💰 اكتب ID الشخص وعدد النقاط للتجارة\n\nمثال: 123456 50',
+        'treasure_title': '🗺️ رحلة الكنز', 'treasure_search': '🔍 ابحث', 'treasure_found': '💎 وجدت كنزاً! +',
+        'treasure_empty': '😢 لم تجد شيئاً، حاول مرة أخرى!'
+    },
+    'en': {
+        'btn_universe': '🎪 Yakuza Universe', 'universe_title': '🎪 Yakuza Universe',
+        'btn_create_char': '🎭 Create My Character', 'btn_my_char': '👤 My Character', 'btn_battle': '⚔️ Battle Enemy',
+        'btn_clan': '🏰 My Clan', 'btn_trade': '💰 Trade', 'btn_treasure': '🗺️ Treasure Hunt',
+        'char_choose_class': '🎭 Choose a class:', 'class_hacker': '💻 Hacker', 'class_gamer': '🎮 Gamer', 'class_warrior': '⚔️ Warrior',
+        'char_created': '🎉 Your character was created!', 'char_level': '📈 Level', 'char_hp': '❤️ HP', 'char_class': '🎭 Class',
+        'char_exists': '⚠️ You already have a character!', 'char_none': '❌ You don\'t have a character yet! Create one',
+        'battle_title': '⚔️ Battle Enemy', 'battle_enemy': '👹 Enemy found!', 'battle_win': '🎉 You won! +30 points and +1 level',
+        'battle_lose': '💀 You lost! Try again', 'battle_attack': '⚔️ Attack!',
+        'clan_title': '🏰 Clans', 'clan_create': '🏗️ Create a Clan', 'clan_join': '➕ Join a Clan', 'clan_my': '👥 My Clan',
+        'clan_create_prompt': '🏰 Type your clan\'s name:', 'clan_created': '🎉 Your clan was created!',
+        'clan_none': '❌ You are not in any clan yet!', 'clan_members': '👥 Members',
+        'trade_title': '💰 Points Trade', 'trade_prompt': '💰 Type person\'s ID and points to trade\n\nExample: 123456 50',
+        'treasure_title': '🗺️ Treasure Hunt', 'treasure_search': '🔍 Search', 'treasure_found': '💎 You found treasure! +',
+        'treasure_empty': '😢 Found nothing, try again!'
+    }
+}
+for lang in T:
+    T[lang].update(RPG_T[lang])
+
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
@@ -465,6 +525,7 @@ def main_menu(uid):
           InlineKeyboardButton(t(uid,'cat_gift'), callback_data="cat_gift"))
     m.add(InlineKeyboardButton(t(uid,'cat_fun'), callback_data="cat_fun"),
           InlineKeyboardButton(t(uid,'cat_settings'), callback_data="cat_settings"))
+    m.add(InlineKeyboardButton(t(uid,'btn_universe'), callback_data="universe_menu"))
     m.add(InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
     m.add(InlineKeyboardButton(t(uid,'btn_channel'), url="https://t.me/YAKUZA_CEO3"))
     if uid == ADMIN_ID:
@@ -582,6 +643,35 @@ def broadcast_cmd(message):
 def handle_text(message):
     uid = message.from_user.id
     text = message.text.strip()
+
+    # ── دروستکردنی باڵکۆن ──
+    if awaiting_broadcast.get(f"clan_{uid}"):
+        awaiting_broadcast[f"clan_{uid}"] = False
+        user_clans[uid] = text
+        if text not in clan_members:
+            clan_members[text] = []
+        clan_members[text].append(uid)
+        bot.send_message(message.chat.id, t(uid,'clan_created'))
+        return
+
+    # ── بازرگانی ──
+    if awaiting_broadcast.get(f"trade_{uid}"):
+        awaiting_broadcast[f"trade_{uid}"] = False
+        try:
+            parts = text.split()
+            target_id, amount = int(parts[0]), int(parts[1])
+            if get_points(uid) >= amount:
+                user_points[uid] -= amount
+                add_points(target_id, amount)
+                bot.send_message(message.chat.id, "✅")
+                try:
+                    bot.send_message(target_id, f"💰 +{amount} 🪙")
+                except: pass
+            else:
+                bot.send_message(message.chat.id, "❌")
+        except:
+            bot.send_message(message.chat.id, "❌")
+        return
 
     # ── چالینج ──
     if awaiting_broadcast.get(f"challenge_{uid}"):
@@ -899,6 +989,114 @@ def cb(call):
         # ── فێرکاری ──
         elif call.data == "tutorial":
             bot.edit_message_text(t(uid,'tutorial_text'), cid, mid, reply_markup=back_btn(uid))
+
+        # ══════ دنیای یاکوزا ══════
+        elif call.data == "universe_menu":
+            mm = InlineKeyboardMarkup(row_width=2)
+            mm.add(InlineKeyboardButton(t(uid,'btn_create_char'), callback_data="create_char"),
+                   InlineKeyboardButton(t(uid,'btn_my_char'), callback_data="my_char"))
+            mm.add(InlineKeyboardButton(t(uid,'btn_battle'), callback_data="battle_start"),
+                   InlineKeyboardButton(t(uid,'btn_treasure'), callback_data="treasure_search"))
+            mm.add(InlineKeyboardButton(t(uid,'btn_clan'), callback_data="clan_menu"),
+                   InlineKeyboardButton(t(uid,'btn_trade'), callback_data="trade_start"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
+            bot.edit_message_text(t(uid,'universe_title'), cid, mid, reply_markup=mm)
+
+        # ── دروستکردنی کاراکتەر ──
+        elif call.data == "create_char":
+            if uid in user_characters:
+                bot.answer_callback_query(call.id, t(uid,'char_exists'), show_alert=True)
+            else:
+                mm = InlineKeyboardMarkup()
+                mm.add(InlineKeyboardButton(t(uid,'class_hacker'), callback_data="class_hacker"))
+                mm.add(InlineKeyboardButton(t(uid,'class_gamer'), callback_data="class_gamer"))
+                mm.add(InlineKeyboardButton(t(uid,'class_warrior'), callback_data="class_warrior"))
+                mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="universe_menu"))
+                bot.edit_message_text(t(uid,'char_choose_class'), cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("class_"):
+            cls = call.data.split("_")[1]
+            user_characters[uid] = {'class': cls, 'level': 1, 'hp': 100, 'name': name}
+            bot.edit_message_text(t(uid,'char_created'), cid, mid, reply_markup=back_btn(uid,"universe_menu"))
+
+        # ── کاراکتەرەکەم ──
+        elif call.data == "my_char":
+            char = user_characters.get(uid)
+            if not char:
+                bot.edit_message_text(t(uid,'char_none'), cid, mid, reply_markup=back_btn(uid,"universe_menu"))
+            else:
+                cls_name = t(uid, f"class_{char['class']}")
+                text = f"👤 {char['name']}\n\n{t(uid,'char_class')}: {cls_name}\n{t(uid,'char_level')}: {char['level']}\n{t(uid,'char_hp')}: {char['hp']}"
+                bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid,"universe_menu"))
+
+        # ── شەڕ ──
+        elif call.data == "battle_start":
+            char = user_characters.get(uid)
+            if not char:
+                bot.answer_callback_query(call.id, t(uid,'char_none'), show_alert=True)
+            else:
+                mm = InlineKeyboardMarkup()
+                mm.add(InlineKeyboardButton(t(uid,'battle_attack'), callback_data="battle_attack"))
+                mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="universe_menu"))
+                bot.edit_message_text(f"{t(uid,'battle_title')}\n\n{t(uid,'battle_enemy')}", cid, mid, reply_markup=mm)
+
+        elif call.data == "battle_attack":
+            char = user_characters.get(uid)
+            if char:
+                if random.random() > 0.35:
+                    add_points(uid, 30)
+                    char['level'] += 1
+                    bot.edit_message_text(t(uid,'battle_win'), cid, mid, reply_markup=back_btn(uid,"universe_menu"))
+                else:
+                    bot.edit_message_text(t(uid,'battle_lose'), cid, mid, reply_markup=back_btn(uid,"universe_menu"))
+
+        # ── گەنجینە ──
+        elif call.data == "treasure_search":
+            char = user_characters.get(uid)
+            if not char:
+                bot.answer_callback_query(call.id, t(uid,'char_none'), show_alert=True)
+            else:
+                if random.random() > 0.4:
+                    pts = random.choice([15, 25, 40, 60])
+                    add_points(uid, pts)
+                    text = f"{t(uid,'treasure_title')}\n\n{t(uid,'treasure_found')}{pts} 🪙"
+                else:
+                    text = f"{t(uid,'treasure_title')}\n\n{t(uid,'treasure_empty')}"
+                mm = InlineKeyboardMarkup()
+                mm.add(InlineKeyboardButton(t(uid,'treasure_search'), callback_data="treasure_search"))
+                mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="universe_menu"))
+                bot.edit_message_text(text, cid, mid, reply_markup=mm)
+
+        # ── باڵکۆن ──
+        elif call.data == "clan_menu":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'clan_create'), callback_data="clan_create"))
+            mm.add(InlineKeyboardButton(t(uid,'clan_my'), callback_data="clan_my"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="universe_menu"))
+            bot.edit_message_text(t(uid,'clan_title'), cid, mid, reply_markup=mm)
+
+        elif call.data == "clan_create":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="clan_menu"))
+            awaiting_broadcast[f"clan_{uid}"] = True
+            bot.edit_message_text(t(uid,'clan_create_prompt'), cid, mid, reply_markup=mm)
+
+        elif call.data == "clan_my":
+            clan = user_clans.get(uid)
+            if not clan:
+                bot.edit_message_text(t(uid,'clan_none'), cid, mid, reply_markup=back_btn(uid,"clan_menu"))
+            else:
+                members = clan_members.get(clan, [])
+                text = f"🏰 {clan}\n\n{t(uid,'clan_members')}: {len(members)}"
+                bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid,"clan_menu"))
+
+        # ── بازرگانی ──
+        elif call.data == "trade_start":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="universe_menu"))
+            awaiting_broadcast[f"trade_{uid}"] = True
+            bot.edit_message_text(t(uid,'trade_prompt'), cid, mid, reply_markup=mm)
+
 
 
 
