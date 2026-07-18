@@ -33,6 +33,10 @@ user_clans = {}
 clan_members = {}
 trade_offers = {}
 treasure_map = {}
+squad_groups = {}
+user_squad = {}
+app_updates_track = {}
+
 
 
 
@@ -453,6 +457,63 @@ RPG_T = {
 for lang in T:
     T[lang].update(RPG_T[lang])
 
+
+NEW_T = {
+    'ku': {
+        'btn_smart_search': '🎯 گەڕانی زیرەک', 'btn_squad': '👥 تیمەکەم', 'btn_ref_tree': '📈 دارەخۆشی بانگهێشت',
+        'btn_update_track': '🔔 شوێنپێدانی نوێکردنەوە',
+        'smart_search_prompt': '🎯 ناوی ئەپێک بنووسە، شتی گونجاو پێشنیار دەکەم:',
+        'smart_search_result': '🎯 پێشنیارەکانم بۆت:',
+        'squad_title': '👥 تیمی خۆت', 'squad_create': '🏗️ تیمێک دروست بکە', 'squad_join': '➕ چوونە تیمێک', 'squad_none': '❌ لە هیچ تیمێک نیت',
+        'squad_create_prompt': '👥 ناوی تیمەکەت بنووسە:', 'squad_created': '🎉 تیمەکەت دروست بوو!',
+        'squad_members': '👥 ئەندامان', 'squad_id_prompt': '➕ ناوی تیمی هاوڕێکەت بنووسە بۆ چوونە ناوی:',
+        'squad_joined': '✅ چوویتە ناو تیمەکە!', 'squad_not_found': '❌ تیمەکە نەدۆزرایەوە!',
+        'ref_tree_title': '📈 دارەخۆشی بانگهێشتی تۆ', 'ref_tree_direct': '👤 ڕاستەوخۆ بانگهێشتکراوان',
+        'ref_tree_total': '🌳 کۆی گشتی لە هەموو ئاستەکان', 'ref_tree_empty': 'هێشتا کەست بانگهێشت نەکردووە',
+        'update_track_title': '🔔 شوێنپێدانی نوێکردنەوە', 'update_track_desc': 'ئاگادارت دەکەمەوە کاتێک ئەپێک نوێ دەبێتەوە!',
+        'update_track_added': '✅ زیاد کرا بۆ شوێنپێدان!'
+    },
+    'ar': {
+        'btn_smart_search': '🎯 البحث الذكي', 'btn_squad': '👥 فريقي', 'btn_ref_tree': '📈 شجرة الدعوات',
+        'btn_update_track': '🔔 تتبع التحديثات',
+        'smart_search_prompt': '🎯 اكتب اسم تطبيق، سأقترح لك ما يناسبك:',
+        'smart_search_result': '🎯 اقتراحاتي لك:',
+        'squad_title': '👥 فريقك', 'squad_create': '🏗️ أنشئ فريق', 'squad_join': '➕ انضم لفريق', 'squad_none': '❌ لست في أي فريق',
+        'squad_create_prompt': '👥 اكتب اسم فريقك:', 'squad_created': '🎉 تم إنشاء فريقك!',
+        'squad_members': '👥 الأعضاء', 'squad_id_prompt': '➕ اكتب اسم فريق صديقك للانضمام:',
+        'squad_joined': '✅ انضممت للفريق!', 'squad_not_found': '❌ الفريق غير موجود!',
+        'ref_tree_title': '📈 شجرة دعواتك', 'ref_tree_direct': '👤 المدعوون مباشرة',
+        'ref_tree_total': '🌳 المجموع الكلي لكل المستويات', 'ref_tree_empty': 'لم تدعُ أحداً بعد',
+        'update_track_title': '🔔 تتبع التحديثات', 'update_track_desc': 'سأنبهك عندما يتم تحديث أي تطبيق!',
+        'update_track_added': '✅ تمت الإضافة للتتبع!'
+    },
+    'en': {
+        'btn_smart_search': '🎯 Smart Search', 'btn_squad': '👥 My Squad', 'btn_ref_tree': '📈 Referral Tree',
+        'btn_update_track': '🔔 Update Tracker',
+        'smart_search_prompt': '🎯 Type an app name, I\'ll suggest something similar:',
+        'smart_search_result': '🎯 My suggestions for you:',
+        'squad_title': '👥 Your Squad', 'squad_create': '🏗️ Create Squad', 'squad_join': '➕ Join Squad', 'squad_none': '❌ You are not in any squad',
+        'squad_create_prompt': '👥 Type your squad name:', 'squad_created': '🎉 Your squad was created!',
+        'squad_members': '👥 Members', 'squad_id_prompt': '➕ Type your friend\'s squad name to join:',
+        'squad_joined': '✅ Joined the squad!', 'squad_not_found': '❌ Squad not found!',
+        'ref_tree_title': '📈 Your Referral Tree', 'ref_tree_direct': '👤 Direct invites',
+        'ref_tree_total': '🌳 Total across all levels', 'ref_tree_empty': 'You haven\'t invited anyone yet',
+        'update_track_title': '🔔 Update Tracker', 'update_track_desc': 'I\'ll notify you when any app is updated!',
+        'update_track_added': '✅ Added to tracking!'
+    }
+}
+for lang in T:
+    T[lang].update(NEW_T[lang])
+
+app_names_db = ['PicsArt', 'Spotify', 'Instagram', 'YouTube', 'CapCut', 'Roblox', 'Minecraft', 'GTA', 'Free Fire', 'Candy Crush', 'InShot', 'SnapTube']
+
+def smart_search_suggest(query):
+    query_lower = query.lower()
+    matches = [a for a in app_names_db if query_lower in a.lower() or a.lower() in query_lower]
+    if not matches:
+        matches = random.sample(app_names_db, 3)
+    return matches[:3]
+
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
@@ -538,6 +599,8 @@ def cat_hack_menu(uid):
           InlineKeyboardButton(t(uid,'btn_anti'), callback_data="anti_ban_info"))
     m.add(InlineKeyboardButton(t(uid,'btn_world'), callback_data="hacker_world"),
           InlineKeyboardButton(t(uid,'btn_game'), callback_data="random_game"))
+    m.add(InlineKeyboardButton(t(uid,'btn_smart_search'), callback_data="smart_search"),
+          InlineKeyboardButton(t(uid,'btn_update_track'), callback_data="update_track"))
     m.add(InlineKeyboardButton(t(uid,'btn_faq'), callback_data="faq"))
     m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
@@ -573,7 +636,8 @@ def cat_fun_menu(uid):
           InlineKeyboardButton(t(uid,'btn_streak'), callback_data="my_streak"))
     m.add(InlineKeyboardButton(t(uid,'btn_lead'), callback_data="leaderboard"),
           InlineKeyboardButton(t(uid,'btn_weekly'), callback_data="weekly_contest"))
-    m.add(InlineKeyboardButton(t(uid,'btn_rank'), callback_data="my_rank"))
+    m.add(InlineKeyboardButton(t(uid,'btn_rank'), callback_data="my_rank"),
+          InlineKeyboardButton(t(uid,'btn_squad'), callback_data="squad_menu"))
     m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
 
@@ -587,6 +651,7 @@ def cat_settings_menu(uid):
           InlineKeyboardButton(t(uid,'btn_qr'), callback_data="my_qr"))
     m.add(InlineKeyboardButton(t(uid,'btn_tutorial'), callback_data="tutorial"),
           InlineKeyboardButton(t(uid,'btn_report'), callback_data="report_issue"))
+    m.add(InlineKeyboardButton(t(uid,'btn_ref_tree'), callback_data="ref_tree"))
     m.add(InlineKeyboardButton(t(uid,'back'), callback_data="back_to_main"))
     return m
 
@@ -643,6 +708,34 @@ def broadcast_cmd(message):
 def handle_text(message):
     uid = message.from_user.id
     text = message.text.strip()
+
+    # ── گەڕانی زیرەک ──
+    if awaiting_broadcast.get(f"search_{uid}"):
+        awaiting_broadcast[f"search_{uid}"] = False
+        suggestions = smart_search_suggest(text)
+        result_text = f"{t(uid,'smart_search_result')}\n\n" + "\n".join([f"📱 {s}" for s in suggestions])
+        bot.send_message(message.chat.id, result_text)
+        return
+
+    # ── دروستکردنی تیم ──
+    if awaiting_broadcast.get(f"squadcreate_{uid}"):
+        awaiting_broadcast[f"squadcreate_{uid}"] = False
+        user_squad[uid] = text
+        if text not in squad_groups: squad_groups[text] = []
+        squad_groups[text].append(uid)
+        bot.send_message(message.chat.id, t(uid,'squad_created'))
+        return
+
+    # ── چوونە تیم ──
+    if awaiting_broadcast.get(f"squadjoin_{uid}"):
+        awaiting_broadcast[f"squadjoin_{uid}"] = False
+        if text in squad_groups:
+            user_squad[uid] = text
+            squad_groups[text].append(uid)
+            bot.send_message(message.chat.id, t(uid,'squad_joined'))
+        else:
+            bot.send_message(message.chat.id, t(uid,'squad_not_found'))
+        return
 
     # ── دروستکردنی باڵکۆن ──
     if awaiting_broadcast.get(f"clan_{uid}"):
@@ -1096,6 +1189,64 @@ def cb(call):
             mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="universe_menu"))
             awaiting_broadcast[f"trade_{uid}"] = True
             bot.edit_message_text(t(uid,'trade_prompt'), cid, mid, reply_markup=mm)
+
+        # ── گەڕانی زیرەک ──
+        elif call.data == "smart_search":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_hack"))
+            awaiting_broadcast[f"search_{uid}"] = True
+            bot.edit_message_text(t(uid,'smart_search_prompt'), cid, mid, reply_markup=mm)
+
+        # ── شوێنپێدانی نوێکردنەوە ──
+        elif call.data == "update_track":
+            app_updates_track[uid] = True
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'btn_store'), url="https://saadmzore238-arch.github.io/My.apps/"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_hack"))
+            bot.edit_message_text(f"{t(uid,'update_track_title')}\n\n{t(uid,'update_track_desc')}\n\n{t(uid,'update_track_added')}", cid, mid, reply_markup=mm)
+
+        # ── تیم ──
+        elif call.data == "squad_menu":
+            squad = user_squad.get(uid)
+            mm = InlineKeyboardMarkup()
+            if squad:
+                mm.add(InlineKeyboardButton(t(uid,'squad_members'), callback_data="squad_view"))
+            else:
+                mm.add(InlineKeyboardButton(t(uid,'squad_create'), callback_data="squad_create"))
+                mm.add(InlineKeyboardButton(t(uid,'squad_join'), callback_data="squad_join"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            title = f"🏰 {squad}" if squad else t(uid,'squad_none')
+            bot.edit_message_text(title, cid, mid, reply_markup=mm)
+
+        elif call.data == "squad_create":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="squad_menu"))
+            awaiting_broadcast[f"squadcreate_{uid}"] = True
+            bot.edit_message_text(t(uid,'squad_create_prompt'), cid, mid, reply_markup=mm)
+
+        elif call.data == "squad_join":
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="squad_menu"))
+            awaiting_broadcast[f"squadjoin_{uid}"] = True
+            bot.edit_message_text(t(uid,'squad_id_prompt'), cid, mid, reply_markup=mm)
+
+        elif call.data == "squad_view":
+            squad = user_squad.get(uid)
+            members = squad_groups.get(squad, [])
+            text = f"🏰 {squad}\n\n{t(uid,'squad_members')}: {len(members)}"
+            bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid,"squad_menu"))
+
+        # ── دارەخۆشی بانگهێشت ──
+        elif call.data == "ref_tree":
+            direct = user_referrals.get(uid, [])
+            total = len(direct)
+            for r in direct:
+                total += len(user_referrals.get(r, []))
+            text = f"{t(uid,'ref_tree_title')}\n\n{t(uid,'ref_tree_direct')}: {len(direct)}\n{t(uid,'ref_tree_total')}: {total}"
+            if not direct:
+                text = f"{t(uid,'ref_tree_title')}\n\n{t(uid,'ref_tree_empty')}"
+            bot.edit_message_text(text, cid, mid, reply_markup=back_btn(uid))
+
 
 
 
