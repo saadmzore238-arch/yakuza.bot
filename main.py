@@ -514,6 +514,28 @@ def smart_search_suggest(query):
         matches = random.sample(app_names_db, 3)
     return matches[:3]
 
+
+english_quiz_questions = [
+    {'q': 'What does "HELLO" mean?', 'opts': ['سڵاو', 'ماڵئاوا', 'سوپاس'], 'correct': 0},
+    {'q': 'What does "THANK YOU" mean?', 'opts': ['سوپاس', 'ببورە', 'خۆشحاڵم'], 'correct': 0},
+    {'q': 'What does "GAME" mean?', 'opts': ['یاری', 'کتێب', 'خواردن'], 'correct': 0},
+    {'q': 'What does "DOWNLOAD" mean?', 'opts': ['داونلۆد کردن', 'نووسین', 'خوێندنەوە'], 'correct': 0},
+    {'q': 'What does "FRIEND" mean?', 'opts': ['هاوڕێ', 'دوژمن', 'خوشک'], 'correct': 0},
+    {'q': 'What does "PHONE" mean?', 'opts': ['مۆبایل', 'کۆمپیوتەر', 'تەلەڤیزیۆن'], 'correct': 0},
+    {'q': 'What does "HAPPY" mean?', 'opts': ['خۆشحاڵ', 'دڵگیر', 'ماندوو'], 'correct': 0},
+    {'q': 'What does "WATER" mean?', 'opts': ['ئاو', 'ئاگر', 'با'], 'correct': 0},
+    {'q': 'What does "STRONG" mean?', 'opts': ['بەهێز', 'لاواز', 'بچووک'], 'correct': 0},
+    {'q': 'What does "WIN" mean?', 'opts': ['بردنەوە', 'شکست', 'یاری'], 'correct': 0},
+]
+
+EN_QUIZ_T = {
+    'ku': {'btn_eng_quiz': '🇬🇧 کوویزی ئینگلیزی', 'eng_quiz_title': '🇬🇧 فێربوونی ئینگلیزی', 'eng_quiz_correct': '✅ راستە! +15 خاڵ 🎉', 'eng_quiz_wrong': '❌ هەڵەیە! دووبارە هەوڵبدە'},
+    'ar': {'btn_eng_quiz': '🇬🇧 اختبار إنجليزي', 'eng_quiz_title': '🇬🇧 تعلم الإنجليزية', 'eng_quiz_correct': '✅ صحيح! +15 نقطة 🎉', 'eng_quiz_wrong': '❌ خطأ! حاول مرة أخرى'},
+    'en': {'btn_eng_quiz': '🇬🇧 English Quiz', 'eng_quiz_title': '🇬🇧 Learn English', 'eng_quiz_correct': '✅ Correct! +15 points 🎉', 'eng_quiz_wrong': '❌ Wrong! Try again'}
+}
+for lang in T:
+    T[lang].update(EN_QUIZ_T[lang])
+
 def get_lang(uid): return user_langs.get(uid, None)
 def t(uid, key): return T[get_lang(uid) or 'ku'].get(key, '')
 def add_stat(uid): user_stats[uid] = user_stats.get(uid, 0) + 1
@@ -621,7 +643,8 @@ def cat_gift_menu(uid):
 def cat_fun_menu(uid):
     m = InlineKeyboardMarkup(row_width=2)
     m.add(InlineKeyboardButton(t(uid,'btn_quiz'), callback_data="quiz_start"),
-          InlineKeyboardButton(t(uid,'btn_guess'), callback_data="guess_start"))
+          InlineKeyboardButton(t(uid,'btn_eng_quiz'), callback_data="eng_quiz_start"))
+    m.add(InlineKeyboardButton(t(uid,'btn_guess'), callback_data="guess_start"))
     m.add(InlineKeyboardButton(t(uid,'btn_wheel'), callback_data="wheel_spin"),
           InlineKeyboardButton(t(uid,'btn_dice'), callback_data="dice_roll"))
     m.add(InlineKeyboardButton(t(uid,'btn_rps'), callback_data="rps_start"),
@@ -1271,6 +1294,29 @@ def cb(call):
             else:
                 bot.answer_callback_query(call.id, t(uid,'quiz_wrong'), show_alert=True)
             bot.edit_message_text(f"{t(uid,'welcome')} {name} 🔥\n{t(uid,'bot_name')}", cid, mid, reply_markup=main_menu(uid))
+
+
+        # ── کوویزی ئینگلیزی ──
+        elif call.data == "eng_quiz_start":
+            q = random.choice(english_quiz_questions)
+            mm = InlineKeyboardMarkup()
+            for i, opt in enumerate(q['opts']):
+                mm.add(InlineKeyboardButton(opt, callback_data=f"engquiz_ans_{i}_{q['correct']}"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(f"{t(uid,'eng_quiz_title')}\n\n🇬🇧 {q['q']}", cid, mid, reply_markup=mm)
+
+        elif call.data.startswith("engquiz_ans_"):
+            parts = call.data.split("_")
+            chosen, correct = int(parts[2]), int(parts[3])
+            if chosen == correct:
+                add_points(uid, 15)
+                bot.answer_callback_query(call.id, t(uid,'eng_quiz_correct'), show_alert=True)
+            else:
+                bot.answer_callback_query(call.id, t(uid,'eng_quiz_wrong'), show_alert=True)
+            mm = InlineKeyboardMarkup()
+            mm.add(InlineKeyboardButton(t(uid,'btn_eng_quiz'), callback_data="eng_quiz_start"))
+            mm.add(InlineKeyboardButton(t(uid,'back'), callback_data="cat_fun"))
+            bot.edit_message_text(t(uid,'eng_quiz_title'), cid, mid, reply_markup=mm)
 
         # ── دۆزینەوەی ژمارە ──
         elif call.data == "guess_start":
